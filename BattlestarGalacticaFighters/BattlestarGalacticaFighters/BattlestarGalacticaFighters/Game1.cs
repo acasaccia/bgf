@@ -33,8 +33,7 @@ namespace BattlestarGalacticaFighters
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
+            Components.Add(new Rendering(this));
             base.Initialize();
         }
 
