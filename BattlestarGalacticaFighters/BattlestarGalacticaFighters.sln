@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattlestarGalacticaFighters", "BattlestarGalacticaFighters\BattlestarGalacticaFighters\BattlestarGalacticaFighters.csproj", "{67BC76C0-880B-4D89-8F5B-C1442DC4ABEB}"
+EndProject
+Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "BattlestarGalacticaFightersContent", "BattlestarGalacticaFighters\BattlestarGalacticaFightersContent\BattlestarGalacticaFightersContent.contentproj", "{3868B0FC-7047-4254-9DF0-4EF5CAD56552}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 3
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs37
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = BattlestarGalacticaFighters\\BattlestarGalacticaFighters\\BattlestarGalacticaFighters.csproj
+		SccProjectName1 = BattlestarGalacticaFighters/BattlestarGalacticaFighters
+		SccLocalPath1 = BattlestarGalacticaFighters\\BattlestarGalacticaFighters
+		SccProjectUniqueName2 = BattlestarGalacticaFighters\\BattlestarGalacticaFightersContent\\BattlestarGalacticaFightersContent.contentproj
+		SccProjectName2 = BattlestarGalacticaFighters/BattlestarGalacticaFightersContent
+		SccLocalPath2 = BattlestarGalacticaFighters\\BattlestarGalacticaFightersContent
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{67BC76C0-880B-4D89-8F5B-C1442DC4ABEB}.Debug|x86.ActiveCfg = Debug|x86
+		{67BC76C0-880B-4D89-8F5B-C1442DC4ABEB}.Debug|x86.Build.0 = Debug|x86
+		{67BC76C0-880B-4D89-8F5B-C1442DC4ABEB}.Release|x86.ActiveCfg = Release|x86
+		{67BC76C0-880B-4D89-8F5B-C1442DC4ABEB}.Release|x86.Build.0 = Release|x86
+		{3868B0FC-7047-4254-9DF0-4EF5CAD56552}.Debug|x86.ActiveCfg = Debug|x86
+		{3868B0FC-7047-4254-9DF0-4EF5CAD56552}.Release|x86.ActiveCfg = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
