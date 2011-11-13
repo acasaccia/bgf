@@ -123,9 +123,14 @@
     <Content Include="GameThumbnail.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Logic\GameLogic.fsproj">
+      <Project>{A2EB9102-F887-44C9-ABF8-A4163AD341DC}</Project>
+      <Name>GameLogic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BattlestarGalacticaFightersContent\BattlestarGalacticaFightersContent.contentproj">
-      <Name>BattlestarGalacticaFightersContent</Name>
+      <Name>BattlestarGalacticaFightersContent %28Content%29</Name>
       <XnaReferenceType>Content</XnaReferenceType>
+      <Project>{3868B0FC-7047-4254-9DF0-4EF5CAD56552}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

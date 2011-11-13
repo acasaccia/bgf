@@ -57,13 +57,14 @@
       <Name>Cylon_Raider</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
+      <ProcessorParameters_Scale>0.01</ProcessorParameters_Scale>
     </Compile>
     <Compile Include="Viper_Mk_II.fbx">
       <Name>Viper_Mk_II</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
       <ProcessorParameters_RotationY>180</ProcessorParameters_RotationY>
-      <ProcessorParameters_Scale>0.1</ProcessorParameters_Scale>
+      <ProcessorParameters_Scale>0.01</ProcessorParameters_Scale>
     </Compile>
     <Compile Include="Viper_Mk_VII.fbx">
       <Name>Viper_Mk_VII</Name>
