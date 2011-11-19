@@ -35,6 +35,7 @@ namespace BattlestarGalacticaFighters
         SpriteBatch sprite_batch;
         SoundEffect soundEffect;
         int vertical_background_replication, horizontal_background_replication;
+        Vector3 player_position = Vector3.Zero;
         protected override void LoadContent()
         {
             sprite_batch = new SpriteBatch(GraphicsDevice);
@@ -42,7 +43,11 @@ namespace BattlestarGalacticaFighters
             soundEffect = Game.Content.Load<SoundEffect>("viper_gun");
 
             var input_service = Game.Services.GetService(typeof(IInputService)) as IInputService;
-            input_service.Shoot += () => soundEffect.Play();
+            input_service.FireCannon += () => soundEffect.Play();
+            input_service.MoveLeft += () => player_position -= Vector3.UnitX * 0.01f;
+            input_service.MoveRight += () => player_position += Vector3.UnitX * 0.01f;
+            input_service.MoveUp += () => player_position -= Vector3.UnitZ * 0.01f;
+            input_service.MoveDown += () => player_position += Vector3.UnitZ * 0.01f;
 
             // Initialize scrolling background
             rendering_data.space = Game.Content.Load<Texture2D>("space");
@@ -84,7 +89,7 @@ namespace BattlestarGalacticaFighters
             if (keyboard.IsKeyDown(Keys.Left))
                 direction = +1;
 
-            backgroundPosition.X = backgroundPosition.X + direction * (float)gameTime.ElapsedGameTime.TotalSeconds * rendering_data.backgroundPixelPerSecond;
+            backgroundPosition.X = backgroundPosition.X + direction * (float)gameTime.ElapsedGameTime.TotalSeconds * rendering_data.backgroundPixelPerSecond * 1.5f;
             backgroundPosition.X = backgroundPosition.X % rendering_data.space.Width;
             base.Update(gameTime);
         }
@@ -103,19 +108,38 @@ namespace BattlestarGalacticaFighters
             GraphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
 
             Quaternion rotation = Quaternion.CreateFromYawPitchRoll((float)gameTime.TotalGameTime.TotalSeconds, 0.0f, 0.0f);
+            Quaternion rotation2 = Quaternion.CreateFromYawPitchRoll(0.0f, 0.0f, (float)gameTime.TotalGameTime.TotalSeconds);
 
             player_ship.Draw(
-                basic_effect.World * Matrix.CreateTranslation(0.5f, 0.0f, 0.0f)  * Matrix.CreateFromQuaternion(rotation),
+                basic_effect.World * Matrix.CreateTranslation( player_position * 0.5f ),
+                basic_effect.View,
+                basic_effect.Projection
+            );
+
+            //raider.Draw(
+            //    basic_effect.World * Matrix.CreateFromQuaternion(rotation) * Matrix.CreateTranslation(0.2f * (float)Math.Sin((float)gameTime.TotalGameTime.TotalSeconds) + player_position.X * -0.1f, 0.0f, -1.0f + 0.1f * (float)gameTime.TotalGameTime.TotalSeconds),
+            //    basic_effect.View,
+            //    basic_effect.Projection
+            //);
+
+            raider.Draw(
+                basic_effect.World * Matrix.CreateFromQuaternion(rotation2) * Matrix.CreateTranslation(player_position.X * -0.2f, 0.0f, -1.0f + 0.1f * (float)(gameTime.TotalGameTime.TotalSeconds % 15)),
                 basic_effect.View,
                 basic_effect.Projection
             );
 
             raider.Draw(
-                basic_effect.World * Matrix.CreateFromQuaternion(rotation) * Matrix.CreateTranslation(0.2f * (float)Math.Sin((float)gameTime.TotalGameTime.TotalSeconds), 0.0f, -1.0f + 0.1f * (float)gameTime.TotalGameTime.TotalSeconds),
+                basic_effect.World * Matrix.CreateFromQuaternion(rotation2) * Matrix.CreateTranslation(0.3f + player_position.X * -0.2f, 0.0f, -1.0f + 0.1f * (float)(gameTime.TotalGameTime.TotalSeconds % 15)),
                 basic_effect.View,
                 basic_effect.Projection
             );
-    
+
+            raider.Draw(
+                basic_effect.World * Matrix.CreateFromQuaternion(rotation2) * Matrix.CreateTranslation(0.6f + player_position.X * -0.2f, 0.0f, -1.0f + 0.1f * (float)(gameTime.TotalGameTime.TotalSeconds % 15)),
+                basic_effect.View,
+                basic_effect.Projection
+            );
+
             base.Draw(gameTime);
         }
 
