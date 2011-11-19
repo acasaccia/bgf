@@ -43,6 +43,8 @@
     <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Measures.fs" />
+    <Compile Include="Vector2.fs" />
     <Compile Include="GameWorld.fs" />
     <None Include="Script.fsx" />
   </ItemGroup>
