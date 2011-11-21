@@ -73,9 +73,17 @@ namespace BattlestarGalacticaFighters
 
 
         Vector2 backgroundPosition;
+        GameWorld.Logic.GameState current = null, previous = null;
         public override void Update(GameTime gameTime)
         {
             //GameWorld.updateBackground();
+            //previous = current;
+            //current = Logic.updateGameState(current, (float)gameTime.ElapsedGameTime.TotalSeconds);
+
+            if (current == null) current = GameWorld.Logic.state;
+
+            previous = current;
+            current = GameWorld.Logic.updateGameState(current, (float)gameTime.ElapsedGameTime.TotalSeconds);
 
             backgroundPosition.Y += (float)gameTime.ElapsedGameTime.TotalSeconds * rendering_data.backgroundPixelPerSecond;
             backgroundPosition.Y = backgroundPosition.Y % rendering_data.space.Height;
@@ -111,7 +119,7 @@ namespace BattlestarGalacticaFighters
             Quaternion rotation2 = Quaternion.CreateFromYawPitchRoll(0.0f, 0.0f, (float)gameTime.TotalGameTime.TotalSeconds);
 
             player_ship.Draw(
-                basic_effect.World * Matrix.CreateTranslation( player_position * 0.5f ),
+                basic_effect.World * Matrix.CreateTranslation( new Vector3( (float) current.Player.Body.Position.X * 0.5f, 0.0f, 0.0f ) ),
                 basic_effect.View,
                 basic_effect.Projection
             );
