@@ -8,10 +8,10 @@ type m
 [<Measure>]
 type s
 
-// degrees
+// angle degrees
 [<Measure>]
 type d
 
-// Fahrenheit degrees
+// temperature degrees
 [<Measure>]
 type f
