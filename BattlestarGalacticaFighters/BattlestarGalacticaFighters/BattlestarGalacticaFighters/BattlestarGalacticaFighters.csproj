@@ -13,7 +13,7 @@
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <XnaFrameworkVersion>v4.0</XnaFrameworkVersion>
     <XnaPlatform>Windows</XnaPlatform>
-    <XnaProfile>HiDef</XnaProfile>
+    <XnaProfile>Reach</XnaProfile>
     <XnaCrossPlatformGroupID>1c338a4c-6ce4-43a1-a166-d442e273c18e</XnaCrossPlatformGroupID>
     <XnaOutputType>Game</XnaOutputType>
     <ApplicationIcon>Game.ico</ApplicationIcon>
@@ -123,9 +123,9 @@
     <Content Include="GameThumbnail.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Logic\GameLogic.fsproj">
+    <ProjectReference Include="..\..\Logic\Logic.fsproj">
       <Project>{A2EB9102-F887-44C9-ABF8-A4163AD341DC}</Project>
-      <Name>GameLogic</Name>
+      <Name>Logic</Name>
     </ProjectReference>
     <ProjectReference Include="..\BattlestarGalacticaFightersContent\BattlestarGalacticaFightersContent.contentproj">
       <Name>BattlestarGalacticaFightersContent %28Content%29</Name>

@@ -5,7 +5,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattlestarGalacticaFighters
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattlestarGalacticaFightersContent", "BattlestarGalacticaFighters\BattlestarGalacticaFightersContent\BattlestarGalacticaFightersContent.contentproj", "{3868B0FC-7047-4254-9DF0-4EF5CAD56552}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "GameLogic", "Logic\GameLogic.fsproj", "{A2EB9102-F887-44C9-ABF8-A4163AD341DC}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Logic", "Logic\Logic.fsproj", "{A2EB9102-F887-44C9-ABF8-A4163AD341DC}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
@@ -19,7 +19,7 @@ Global
 		SccProjectUniqueName2 = BattlestarGalacticaFighters\\BattlestarGalacticaFightersContent\\BattlestarGalacticaFightersContent.contentproj
 		SccProjectName2 = BattlestarGalacticaFighters/BattlestarGalacticaFightersContent
 		SccLocalPath2 = BattlestarGalacticaFighters\\BattlestarGalacticaFightersContent
-		SccProjectUniqueName3 = Logic\\GameLogic.fsproj
+		SccProjectUniqueName3 = Logic\\Logic.fsproj
 		SccProjectName3 = Logic
 		SccLocalPath3 = Logic
 	EndGlobalSection

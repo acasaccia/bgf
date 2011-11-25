@@ -51,7 +51,7 @@ module Logic =
                     gs.Player.Body
                     with Position = 
                     {
-                        X = gs.Player.Body.Position.X + 0.01<m>
+                        X = gs.Player.Body.Position.X
                         Y = gs.Player.Body.Position.Y
                     }
                 }
