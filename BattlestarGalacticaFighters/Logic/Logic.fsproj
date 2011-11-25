@@ -10,7 +10,7 @@
     <RootNamespace>Logic</RootNamespace>
     <AssemblyName>Logic</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <Name>GameLogic</Name>
+    <Name>Logic</Name>
     <SccProjectName>SAK</SccProjectName>
     <SccProvider>SAK</SccProvider>
     <SccAuxPath>SAK</SccAuxPath>
@@ -47,7 +47,8 @@
     <Compile Include="Measures.fs" />
     <Compile Include="Vector2D.fs" />
     <Compile Include="Entities.fs" />
-    <Compile Include="Logic.fs" />
+    <Compile Include="Casanova.fs" />
+    <Compile Include="GameState.fs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\FSharp\1.0\Microsoft.FSharp.Targets" Condition="!Exists('$(MSBuildBinPath)\Microsoft.Build.Tasks.v4.0.dll')" />
   <Import Project="$(MSBuildExtensionsPath32)\..\Microsoft F#\v4.0\Microsoft.FSharp.Targets" Condition=" Exists('$(MSBuildBinPath)\Microsoft.Build.Tasks.v4.0.dll')" />

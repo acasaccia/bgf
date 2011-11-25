@@ -65,9 +65,9 @@ namespace BattlestarGalacticaFighters
             basic_effect = new BasicEffect(GraphicsDevice);
             basic_effect.World = Matrix.Identity;
             basic_effect.View = Matrix.CreateLookAt(Vector3.Up * 1.0f, Vector3.Zero, Vector3.Forward);
-            basic_effect.Projection = Matrix.CreateOrthographic((float)GraphicsDevice.Viewport.Width/GraphicsDevice.Viewport.Height, 1.0f, 0.1f, 10000.0f);
+            //basic_effect.Projection = Matrix.CreateOrthographic((float)GraphicsDevice.Viewport.Width/GraphicsDevice.Viewport.Height, 1.0f, 0.1f, 10000.0f);
             //basic_effect.View = Matrix.CreateLookAt(Vector3.Up * 0.5f, Vector3.Zero, Vector3.Forward);
-            //basic_effect.Projection = Matrix.CreatePerspectiveFieldOfView(1.5f, GraphicsDevice.Viewport.AspectRatio, 0.1f, 10.0f);
+            basic_effect.Projection = Matrix.CreatePerspectiveFieldOfView(1.0f, GraphicsDevice.Viewport.AspectRatio, 0.1f, 10.0f);
             base.LoadContent();
         }
 
