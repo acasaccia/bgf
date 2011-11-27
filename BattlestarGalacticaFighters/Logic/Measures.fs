@@ -8,9 +8,9 @@ type m
 [<Measure>]
 type s
 
-// angle degrees
+// radiants
 [<Measure>]
-type d
+type rad
 
 // temperature degrees
 [<Measure>]

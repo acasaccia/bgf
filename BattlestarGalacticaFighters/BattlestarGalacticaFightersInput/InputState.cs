@@ -37,6 +37,7 @@ namespace BattlestarGalacticaFightersInput
         KeyboardState prev_kb = new KeyboardState();
         GamePadState prev_gamepad = new GamePadState();
 
+        // Questi mascherano i diversi controllers
         public static bool FireCannon;
         public static bool MoveUp;
         public static bool MoveRight;
@@ -48,36 +49,12 @@ namespace BattlestarGalacticaFightersInput
             KeyboardState keyboard = Keyboard.GetState();
             GamePadState gamepad = GamePad.GetState(PlayerIndex.One);
 
-            if (
-                (gamepad.Buttons.A == ButtonState.Pressed && gamepad.Buttons.A != ButtonState.Pressed) ||
-                (keyboard.IsKeyDown(Keys.Space) && prev_kb.IsKeyUp(Keys.Space))
-            )
-                FireCannon = true;
-
-            if (
-                (gamepad.Buttons.LeftStick == ButtonState.Pressed) ||
-                (keyboard.IsKeyDown(Keys.Left))
-            )
-                MoveLeft = true;
-
-            if (
-                (gamepad.Buttons.RightStick == ButtonState.Pressed) ||
-                (keyboard.IsKeyDown(Keys.Right))
-            )
-                MoveRight = true;
-
-            if (
-                (gamepad.Buttons.LeftStick == ButtonState.Pressed) ||
-                (keyboard.IsKeyDown(Keys.Up))
-            )
-                MoveUp = true;
-
-            if (
-                (gamepad.Buttons.RightStick == ButtonState.Pressed) ||
-                (keyboard.IsKeyDown(Keys.Down))
-            )
-                MoveDown = true;
-
+            FireCannon = (gamepad.Buttons.A == ButtonState.Pressed) || (keyboard.IsKeyDown(Keys.Space));
+            MoveRight = (gamepad.ThumbSticks.Left.X < 0) || (keyboard.IsKeyDown(Keys.Left));
+            MoveLeft = (gamepad.ThumbSticks.Left.X > 0) || (keyboard.IsKeyDown(Keys.Right));
+            MoveUp = (gamepad.ThumbSticks.Left.Y > 0) || (keyboard.IsKeyDown(Keys.Up));
+            MoveDown = (gamepad.ThumbSticks.Left.Y < 0) || (keyboard.IsKeyDown(Keys.Down));
+            
             prev_kb = keyboard;
             prev_gamepad = gamepad;
 

@@ -37,7 +37,7 @@ namespace BattlestarGalacticaFighters
         protected override void Initialize()
         {
             Components.Add(new Rendering(this));
-            Components.Add(new InputState(this));
+            Components.Add(new BattlestarGalacticaFightersInput.InputState(this));
             base.Initialize();
         }
 

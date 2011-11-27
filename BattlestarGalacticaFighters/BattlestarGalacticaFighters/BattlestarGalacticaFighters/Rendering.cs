@@ -44,10 +44,6 @@ namespace BattlestarGalacticaFighters
 
             //var input_service = Game.Services.GetService(typeof(IInputService)) as IInputService;
             //input_service.FireCannon += () => soundEffect.Play();
-            //input_service.MoveLeft += () => player_position -= Vector3.UnitX * 0.01f;
-            //input_service.MoveRight += () => player_position += Vector3.UnitX * 0.01f;
-            //input_service.MoveUp += () => player_position -= Vector3.UnitZ * 0.01f;
-            //input_service.MoveDown += () => player_position += Vector3.UnitZ * 0.01f;
 
             // Initialize scrolling background
             rendering_data.space = Game.Content.Load<Texture2D>("space");
@@ -64,7 +60,7 @@ namespace BattlestarGalacticaFighters
             // Initialize basic_effect
             basic_effect = new BasicEffect(GraphicsDevice);
             basic_effect.World = Matrix.Identity;
-            basic_effect.View = Matrix.CreateLookAt(Vector3.Up * 1.0f, Vector3.Zero, Vector3.Forward);
+            basic_effect.View = Matrix.CreateLookAt(Vector3.Backward * 1.0f, Vector3.Zero, Vector3.Up);
             basic_effect.Projection = Matrix.CreateOrthographic((float)GraphicsDevice.Viewport.Width/GraphicsDevice.Viewport.Height, 1.0f, 0.1f, 10000.0f);
             //basic_effect.View = Matrix.CreateLookAt(Vector3.Up * 0.5f, Vector3.Zero, Vector3.Forward);
             //basic_effect.Projection = Matrix.CreatePerspectiveFieldOfView(1.0f, GraphicsDevice.Viewport.AspectRatio, 0.1f, 10.0f);
@@ -106,11 +102,12 @@ namespace BattlestarGalacticaFighters
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             GraphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
 
-            Quaternion rotation = Quaternion.CreateFromYawPitchRoll((float)gameTime.TotalGameTime.TotalSeconds, 0.0f, 0.0f);
-            Quaternion rotation2 = Quaternion.CreateFromYawPitchRoll(0.0f, 0.0f, (float)gameTime.TotalGameTime.TotalSeconds);
+            //Quaternion rotation2 = Quaternion.CreateFromYawPitchRoll(0.0f, 0.0f, (float)gameTime.TotalGameTime.TotalSeconds);
 
             player_ship.Draw(
-                basic_effect.World * Matrix.CreateTranslation(new Vector3((float) GameState.state.player.Value.Position.Value.X * 0.5f, 0.0f, 0.0f)),
+                basic_effect.World
+                * Matrix.CreateFromQuaternion(Quaternion.CreateFromYawPitchRoll(GameState.state.viper.Value.Yaw.Value, 0.0f, 0.0f))
+                * Matrix.CreateTranslation( Utilities.ConvertGameStateVector( GameState.state.viper.Value.Position.Value ) ),
                 basic_effect.View,
                 basic_effect.Projection
             );

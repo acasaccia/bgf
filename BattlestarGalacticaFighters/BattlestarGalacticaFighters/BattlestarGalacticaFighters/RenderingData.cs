@@ -17,4 +17,13 @@ namespace BattlestarGalacticaFighters
         public UInt16 backgroundPixelPerSecond = 64;
         public Texture2D space;
     }
+
+    class Utilities
+    {
+        // We won't be using z axis in our game logic, so let's keep it simple
+        public static Vector3 ConvertGameStateVector( Vector2D.Vector2D vector2d )
+        {
+            return new Vector3((float)vector2d.X , (float)vector2d.Y, 0.0f );
+        }
+    }
 }
