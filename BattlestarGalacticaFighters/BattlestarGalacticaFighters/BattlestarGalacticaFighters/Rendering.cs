@@ -33,21 +33,21 @@ namespace BattlestarGalacticaFighters
         Model player_ship, raider;
         RenderingData rendering_data = new RenderingData();
         SpriteBatch sprite_batch;
-        SoundEffect soundEffect;
+        //SoundEffect soundEffect;
         int vertical_background_replication, horizontal_background_replication;
         Vector3 player_position = Vector3.Zero;
         protected override void LoadContent()
         {
             sprite_batch = new SpriteBatch(GraphicsDevice);
 
-            soundEffect = Game.Content.Load<SoundEffect>("viper_gun");
+            //soundEffect = Game.Content.Load<SoundEffect>("viper_gun");
 
-            var input_service = Game.Services.GetService(typeof(IInputService)) as IInputService;
-            input_service.FireCannon += () => soundEffect.Play();
-            input_service.MoveLeft += () => player_position -= Vector3.UnitX * 0.01f;
-            input_service.MoveRight += () => player_position += Vector3.UnitX * 0.01f;
-            input_service.MoveUp += () => player_position -= Vector3.UnitZ * 0.01f;
-            input_service.MoveDown += () => player_position += Vector3.UnitZ * 0.01f;
+            //var input_service = Game.Services.GetService(typeof(IInputService)) as IInputService;
+            //input_service.FireCannon += () => soundEffect.Play();
+            //input_service.MoveLeft += () => player_position -= Vector3.UnitX * 0.01f;
+            //input_service.MoveRight += () => player_position += Vector3.UnitX * 0.01f;
+            //input_service.MoveUp += () => player_position -= Vector3.UnitZ * 0.01f;
+            //input_service.MoveDown += () => player_position += Vector3.UnitZ * 0.01f;
 
             // Initialize scrolling background
             rendering_data.space = Game.Content.Load<Texture2D>("space");
@@ -65,28 +65,20 @@ namespace BattlestarGalacticaFighters
             basic_effect = new BasicEffect(GraphicsDevice);
             basic_effect.World = Matrix.Identity;
             basic_effect.View = Matrix.CreateLookAt(Vector3.Up * 1.0f, Vector3.Zero, Vector3.Forward);
-            //basic_effect.Projection = Matrix.CreateOrthographic((float)GraphicsDevice.Viewport.Width/GraphicsDevice.Viewport.Height, 1.0f, 0.1f, 10000.0f);
+            basic_effect.Projection = Matrix.CreateOrthographic((float)GraphicsDevice.Viewport.Width/GraphicsDevice.Viewport.Height, 1.0f, 0.1f, 10000.0f);
             //basic_effect.View = Matrix.CreateLookAt(Vector3.Up * 0.5f, Vector3.Zero, Vector3.Forward);
-            basic_effect.Projection = Matrix.CreatePerspectiveFieldOfView(1.0f, GraphicsDevice.Viewport.AspectRatio, 0.1f, 10.0f);
+            //basic_effect.Projection = Matrix.CreatePerspectiveFieldOfView(1.0f, GraphicsDevice.Viewport.AspectRatio, 0.1f, 10.0f);
             base.LoadContent();
         }
 
 
         Vector2 backgroundPosition;
-        GameWorld.Logic.GameState current = null, previous = null;
         public override void Update(GameTime gameTime)
         {
-            //GameWorld.updateBackground();
-            //previous = current;
-            //current = Logic.updateGameState(current, (float)gameTime.ElapsedGameTime.TotalSeconds);
+            var dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (current == null) current = GameWorld.Logic.state;
-
-            previous = current;
-            current = GameWorld.Logic.updateGameState(current, (float)gameTime.ElapsedGameTime.TotalSeconds);
-
-            backgroundPosition.Y += (float)gameTime.ElapsedGameTime.TotalSeconds * rendering_data.backgroundPixelPerSecond;
-            backgroundPosition.Y = backgroundPosition.Y % rendering_data.space.Height;
+            GameState.update_state(dt);
+            Casanova.commit_variable_updates();
 
             var direction = 0;
 
@@ -107,8 +99,7 @@ namespace BattlestarGalacticaFighters
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             sprite_batch.Begin();
-
-            this.DrawBackground();
+                this.DrawBackground(gameTime);
             sprite_batch.End();
 
             GraphicsDevice.BlendState = BlendState.Opaque;
@@ -119,7 +110,7 @@ namespace BattlestarGalacticaFighters
             Quaternion rotation2 = Quaternion.CreateFromYawPitchRoll(0.0f, 0.0f, (float)gameTime.TotalGameTime.TotalSeconds);
 
             player_ship.Draw(
-                basic_effect.World * Matrix.CreateTranslation( new Vector3( (float) current.Player.Body.Position.X * 0.5f, 0.0f, 0.0f ) ),
+                basic_effect.World * Matrix.CreateTranslation(new Vector3((float) GameState.state.player.Value.Position.Value.X * 0.5f, 0.0f, 0.0f)),
                 basic_effect.View,
                 basic_effect.Projection
             );
@@ -130,29 +121,32 @@ namespace BattlestarGalacticaFighters
             //    basic_effect.Projection
             //);
 
-            raider.Draw(
-                basic_effect.World * Matrix.CreateFromQuaternion(rotation2) * Matrix.CreateTranslation(player_position.X * -0.2f, 0.0f, -1.0f + 0.1f * (float)(gameTime.TotalGameTime.TotalSeconds % 15)),
-                basic_effect.View,
-                basic_effect.Projection
-            );
+            //raider.Draw(
+            //    basic_effect.World * Matrix.CreateFromQuaternion(rotation2) * Matrix.CreateTranslation(player_position.X * -0.2f, 0.0f, -1.0f + 0.1f * (float)(gameTime.TotalGameTime.TotalSeconds % 15)),
+            //    basic_effect.View,
+            //    basic_effect.Projection
+            //);
 
-            raider.Draw(
-                basic_effect.World * Matrix.CreateFromQuaternion(rotation2) * Matrix.CreateTranslation(0.3f + player_position.X * -0.2f, 0.0f, -1.0f + 0.1f * (float)(gameTime.TotalGameTime.TotalSeconds % 15)),
-                basic_effect.View,
-                basic_effect.Projection
-            );
+            //raider.Draw(
+            //    basic_effect.World * Matrix.CreateFromQuaternion(rotation2) * Matrix.CreateTranslation(0.3f + player_position.X * -0.2f, 0.0f, -1.0f + 0.1f * (float)(gameTime.TotalGameTime.TotalSeconds % 15)),
+            //    basic_effect.View,
+            //    basic_effect.Projection
+            //);
 
-            raider.Draw(
-                basic_effect.World * Matrix.CreateFromQuaternion(rotation2) * Matrix.CreateTranslation(0.6f + player_position.X * -0.2f, 0.0f, -1.0f + 0.1f * (float)(gameTime.TotalGameTime.TotalSeconds % 15)),
-                basic_effect.View,
-                basic_effect.Projection
-            );
+            //raider.Draw(
+            //    basic_effect.World * Matrix.CreateFromQuaternion(rotation2) * Matrix.CreateTranslation(0.6f + player_position.X * -0.2f, 0.0f, -1.0f + 0.1f * (float)(gameTime.TotalGameTime.TotalSeconds % 15)),
+            //    basic_effect.View,
+            //    basic_effect.Projection
+            //);
 
             base.Draw(gameTime);
         }
 
-        public void DrawBackground()
+        public void DrawBackground(GameTime gameTime)
         {
+            backgroundPosition.Y += (float)gameTime.ElapsedGameTime.TotalSeconds * rendering_data.backgroundPixelPerSecond;
+            backgroundPosition.Y = backgroundPosition.Y % rendering_data.space.Height;
+
             // Draw the texture as many times as needed to fill a grid that covers whole viewport
             for (int i = -this.vertical_background_replication; i <= this.vertical_background_replication+1; i++)
             {

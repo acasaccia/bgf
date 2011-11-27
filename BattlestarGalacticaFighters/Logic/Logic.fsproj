@@ -46,9 +46,17 @@
   <ItemGroup>
     <Compile Include="Measures.fs" />
     <Compile Include="Vector2D.fs" />
-    <Compile Include="Entities.fs" />
     <Compile Include="Casanova.fs" />
+    <Compile Include="Entities.fs" />
     <Compile Include="GameState.fs" />
+    <Compile Include="InputState.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BattlestarGalacticaFighters\BattlestarGalacticaFighters\BattlestarGalacticaFighters.csproj">
+      <Name>BattlestarGalacticaFighters</Name>
+      <Project>{67bc76c0-880b-4d89-8f5b-c1442dc4abeb}</Project>
+      <Private>True</Private>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\FSharp\1.0\Microsoft.FSharp.Targets" Condition="!Exists('$(MSBuildBinPath)\Microsoft.Build.Tasks.v4.0.dll')" />
   <Import Project="$(MSBuildExtensionsPath32)\..\Microsoft F#\v4.0\Microsoft.FSharp.Targets" Condition=" Exists('$(MSBuildBinPath)\Microsoft.Build.Tasks.v4.0.dll')" />

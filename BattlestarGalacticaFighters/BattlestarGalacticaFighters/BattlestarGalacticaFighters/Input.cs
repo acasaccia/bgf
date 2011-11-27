@@ -12,30 +12,27 @@ using Microsoft.Xna.Framework.Media;
 
 namespace BattlestarGalacticaFighters
 {
-    public interface IInputService
-    {
-        event Action FireCannon;
-        event Action FireMissile;
-        event Action MoveLeft;
-        event Action MoveRight;
-        event Action MoveUp;
-        event Action MoveDown;
-        event Action CycleTargetRight;
-        event Action CycleTargetLeft;
 
+    // Masks different Input devices and makes input state available to
+    // F# project
+    public static class InputState
+    {
+        public static bool MoveTop;
+        public static bool MoveRight;
+        public static bool MoveBottom;
+        public static bool MoveLeft;
     }
 
-    public class Input : Microsoft.Xna.Framework.GameComponent, IInputService
+    public class Input : Microsoft.Xna.Framework.GameComponent
     {
         public Input(Game game)
             : base(game)
         {
-            game.Services.AddService(typeof(IInputService), this);
+        
         }
 
         protected override void Dispose(bool disposing)
         {
-            Game.Services.RemoveService(typeof(IInputService));
             base.Dispose(disposing);
         }
 
@@ -81,29 +78,13 @@ namespace BattlestarGalacticaFighters
             )
                 if (MoveDown != null) MoveDown();
 
-
-
-            /*
-            if ( keyboard.IsKeyDown(Keys.Space) && prev_kb.IsKeyUp(Keys.Space) )
-                if (Shoot != null) Shoot();
-
-            if (keyboard.IsKeyDown(Keys.Space) && prev_kb.IsKeyUp(Keys.Space))
-                if (Shoot != null) Shoot();
-
-            if (keyboard.IsKeyDown(Keys.Space) && prev_kb.IsKeyUp(Keys.Space))
-                if (Shoot != null) Shoot();
-
-            if (keyboard.IsKeyDown(Keys.Space) && prev_kb.IsKeyUp(Keys.Space))
-                if (Shoot != null) Shoot();
-             */
-
             prev_kb = keyboard;
             prev_gamepad = gamepad;
 
             base.Update(gameTime);
         }
 
-        public event Action FireCannon;
+        public static bool FireCannon;
         public event Action FireMissile;
         public event Action MoveLeft;
         public event Action MoveRight;

@@ -1,6 +1,6 @@
 ﻿module Measures
 
-// meters
+// not meters, megaparsec
 [<Measure>]
 type m
 
