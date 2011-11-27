@@ -4,7 +4,7 @@ open Measures
 open Vector2D
 open Entities
 open Casanova
-open Microsoft.Xna.Framework.Input
+open BattlestarGalacticaFightersInput
 
 type GameState =
  {
@@ -27,9 +27,9 @@ let rec update_state(dt:float32) =
  
 and private update_player (p:Viper) (dt:float32) = 
  p.Position := !p.Position +
-  if Keyboard.GetState().[Keys.Left] = KeyState.Down then
+  if InputState.MoveLeft then
    { X = -0.001<m>; Y = 0.0<m> }
-  elif Keyboard.GetState().[Keys.Right] = KeyState.Down then
+  elif InputState.MoveRight then
    { X = 0.001<m>; Y = 0.0<m> }
   else
    { X = 0.0<m>; Y = 0.0<m> }

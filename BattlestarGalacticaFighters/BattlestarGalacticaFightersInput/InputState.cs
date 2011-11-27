@@ -10,39 +10,39 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
 
-namespace BattlestarGalacticaFighters
+namespace BattlestarGalacticaFightersInput
 {
-
-    // Masks different Input devices and makes input state available to
-    // F# project
-    public static class InputState
+    /// <summary>
+    /// This is a game component that implements IUpdateable.
+    /// </summary>
+    public class InputState : Microsoft.Xna.Framework.GameComponent
     {
-        public static bool MoveTop;
-        public static bool MoveRight;
-        public static bool MoveBottom;
-        public static bool MoveLeft;
-    }
-
-    public class Input : Microsoft.Xna.Framework.GameComponent
-    {
-        public Input(Game game)
+        public InputState(Game game)
             : base(game)
         {
-        
+            // TODO: Construct any child components here
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-        }
-
+        /// <summary>
+        /// Allows the game component to perform any initialization it needs to before starting
+        /// to run.  This is where it can query for any required services and load content.
+        /// </summary>
         public override void Initialize()
         {
+            // TODO: Add your initialization code here
+
             base.Initialize();
         }
 
         KeyboardState prev_kb = new KeyboardState();
         GamePadState prev_gamepad = new GamePadState();
+
+        public static bool FireCannon;
+        public static bool MoveUp;
+        public static bool MoveRight;
+        public static bool MoveDown;
+        public static bool MoveLeft;
+
         public override void Update(GameTime gameTime)
         {
             KeyboardState keyboard = Keyboard.GetState();
@@ -50,33 +50,33 @@ namespace BattlestarGalacticaFighters
 
             if (
                 (gamepad.Buttons.A == ButtonState.Pressed && gamepad.Buttons.A != ButtonState.Pressed) ||
-                (keyboard.IsKeyDown(Keys.Space) && prev_kb.IsKeyUp(Keys.Space) )
+                (keyboard.IsKeyDown(Keys.Space) && prev_kb.IsKeyUp(Keys.Space))
             )
-                if (FireCannon != null) FireCannon();
+                FireCannon = true;
 
             if (
-                (gamepad.Buttons.LeftStick == ButtonState.Pressed ) ||
+                (gamepad.Buttons.LeftStick == ButtonState.Pressed) ||
                 (keyboard.IsKeyDown(Keys.Left))
             )
-                if (MoveLeft != null) MoveLeft();
+                MoveLeft = true;
 
             if (
                 (gamepad.Buttons.RightStick == ButtonState.Pressed) ||
                 (keyboard.IsKeyDown(Keys.Right))
             )
-                if (MoveRight != null) MoveRight();
+                MoveRight = true;
 
             if (
                 (gamepad.Buttons.LeftStick == ButtonState.Pressed) ||
                 (keyboard.IsKeyDown(Keys.Up))
             )
-                if (MoveUp != null) MoveUp();
+                MoveUp = true;
 
             if (
                 (gamepad.Buttons.RightStick == ButtonState.Pressed) ||
                 (keyboard.IsKeyDown(Keys.Down))
             )
-                if (MoveDown != null) MoveDown();
+                MoveDown = true;
 
             prev_kb = keyboard;
             prev_gamepad = gamepad;
@@ -84,13 +84,5 @@ namespace BattlestarGalacticaFighters
             base.Update(gameTime);
         }
 
-        public static bool FireCannon;
-        public event Action FireMissile;
-        public event Action MoveLeft;
-        public event Action MoveRight;
-        public event Action MoveUp;
-        public event Action MoveDown;
-        public event Action CycleTargetRight;
-        public event Action CycleTargetLeft;
     }
 }

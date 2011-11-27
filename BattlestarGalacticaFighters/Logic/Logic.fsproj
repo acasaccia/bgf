@@ -37,6 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553" />
+    <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553" />
     <Reference Include="mscorlib" />
     <Reference Include="FSharp.Core" />
     <Reference Include="System" />
@@ -49,12 +50,11 @@
     <Compile Include="Casanova.fs" />
     <Compile Include="Entities.fs" />
     <Compile Include="GameState.fs" />
-    <Compile Include="InputState.fs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BattlestarGalacticaFighters\BattlestarGalacticaFighters\BattlestarGalacticaFighters.csproj">
-      <Name>BattlestarGalacticaFighters</Name>
-      <Project>{67bc76c0-880b-4d89-8f5b-c1442dc4abeb}</Project>
+    <ProjectReference Include="..\BattlestarGalacticaFightersInput\BattlestarGalacticaFightersInput.csproj">
+      <Name>BattlestarGalacticaFightersInput</Name>
+      <Project>{372db878-802a-42ff-8a54-b272c14e56eb}</Project>
       <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
