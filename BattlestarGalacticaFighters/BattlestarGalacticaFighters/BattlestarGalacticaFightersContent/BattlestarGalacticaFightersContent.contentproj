@@ -65,6 +65,8 @@
       <Processor>ModelProcessor</Processor>
       <ProcessorParameters_RotationY>180</ProcessorParameters_RotationY>
       <ProcessorParameters_Scale>0.01</ProcessorParameters_Scale>
+      <ProcessorParameters_TextureFormat>NoChange</ProcessorParameters_TextureFormat>
+      <ProcessorParameters_RotationX>270</ProcessorParameters_RotationX>
     </Compile>
     <Compile Include="Viper_Mk_VII.fbx">
       <Name>Viper_Mk_VII</Name>
