@@ -1,61 +1,35 @@
-﻿// Ulteriori informazioni su F# all'indirizzo http://fsharp.net
-namespace GameWorld
-module Logic = 
+﻿module GameState
 
-    open Measures
-    open Vector2D
-    open Entities
+open Measures
+open Vector2D
+open Entities
+open Casanova
+open Microsoft.Xna.Framework.Input
 
-    open Microsoft.Xna.Framework.Input
-    open Microsoft.Xna.Framework
+type GameState =
+ {
+  player : Variable<Viper>
+ }
 
-    type GameState =
-        {
-            Player : Viper
-            Enemy : Raider
-        }
+let state : GameState =
+ {
+  player = 
+    Variable( fun () -> { Position = Variable( fun () -> { X = 0.0<m>; Y = 0.0<m> } ) } )
+ }
 
-    let state : GameState =
-        {
-            Player = 
-                {
-                    Body = 
-                        {
-                            Position = { X = 0.0<m>; Y = 0.0<m> };
-                            Yaw = 0.0<d>
-                            Roll = 0.0<d>
-                            Shields = 3
-                        }
-                    Missiles = 3
-                    LockedTarget = None
-                }
-            Enemy = 
-                {
-                    Body = 
-                        {
-                            Position = { X = 0.0<m>; Y = 0.0<m> };
-                            Yaw = 180.0<d>
-                            Roll = 0.0<d>
-                            Shields = 3
-                        }
-                }
-         
-        }
+// Those should be used in scripts
+// let private (!) = immediate_read
+// let private (:=) = immediate_write
 
-    let updateGameState( gs:GameState, dt:float ) =
-        let p =
-            {
-                gs.Player
-                with Body =
-                {
-                    gs.Player.Body
-                    with Position = 
-                    {
-                        X = gs.Player.Body.Position.X
-                        Y = gs.Player.Body.Position.Y
-                    }
-                }
-            }
-        {
-            gs with Player = p
-        }
+let rec update_state(dt:float32) = 
+ update_player !state.player dt
+ state.player := !state.player
+ 
+and private update_player (p:Viper) (dt:float32) = 
+ p.Position := !p.Position +
+  if Keyboard.GetState().[Keys.Left] = KeyState.Down then
+   { X = -0.001<m>; Y = 0.0<m> }
+  elif Keyboard.GetState().[Keys.Right] = KeyState.Down then
+   { X = 0.001<m>; Y = 0.0<m> }
+  else
+   { X = 0.0<m>; Y = 0.0<m> }
