@@ -74,6 +74,11 @@ namespace BattlestarGalacticaFighters
                 this.Exit();
 
             // TODO: Add your update logic here
+            var dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            GameState.update_state(dt);
+            GameState.update_script();
+            Casanova.commit_variable_updates();
 
             base.Update(gameTime);
         }

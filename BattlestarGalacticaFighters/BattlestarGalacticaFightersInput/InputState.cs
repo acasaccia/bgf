@@ -37,7 +37,7 @@ namespace BattlestarGalacticaFightersInput
         KeyboardState prev_kb = new KeyboardState();
         GamePadState prev_gamepad = new GamePadState();
 
-        // Questi mascherano i diversi controllers
+        // These will be accessed by logic and will mask different input methods
         public static bool FireCannon;
         public static bool MoveUp;
         public static bool MoveRight;
@@ -49,14 +49,11 @@ namespace BattlestarGalacticaFightersInput
             KeyboardState keyboard = Keyboard.GetState();
             GamePadState gamepad = GamePad.GetState(PlayerIndex.One);
 
-            FireCannon = (gamepad.Buttons.A == ButtonState.Pressed) || (keyboard.IsKeyDown(Keys.Space));
+            FireCannon = (gamepad.Buttons.A == ButtonState.Pressed) || (keyboard.IsKeyDown(Keys.LeftControl));
             MoveRight = (gamepad.ThumbSticks.Left.X < 0) || (keyboard.IsKeyDown(Keys.Left));
             MoveLeft = (gamepad.ThumbSticks.Left.X > 0) || (keyboard.IsKeyDown(Keys.Right));
             MoveUp = (gamepad.ThumbSticks.Left.Y > 0) || (keyboard.IsKeyDown(Keys.Up));
             MoveDown = (gamepad.ThumbSticks.Left.Y < 0) || (keyboard.IsKeyDown(Keys.Down));
-            
-            prev_kb = keyboard;
-            prev_gamepad = gamepad;
 
             base.Update(gameTime);
         }
