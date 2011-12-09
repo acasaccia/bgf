@@ -51,11 +51,17 @@ let rec update_state(dt:float32<s>) =
 
  for p in !state.projectiles do
   update_projectile p dt
- state.projectiles := !state.projectiles
+ state.projectiles := 
+  [for p in !state.projectiles do
+    if (!p.Position).Y < state.borders.Y then
+     yield p]
 
  for c in !state.cylons do
   update_cylon c dt
- state.cylons := !state.cylons
+ state.cylons := 
+  [for c in !state.cylons do
+    if (!c.Position).Y > -state.borders.Y then
+     yield c]
 
 and private update_viper (viper:Viper) (dt:float32<s>) = 
  viper.Position := !viper.Position + !viper.Speed * dt
@@ -130,18 +136,18 @@ let private main =
     return! update_input()
    }
 
-  let rec spawn_asteroids() = 
+  let rec spawn_cylons() = 
    let random = System.Random()
    co{
-    do! wait (System.Random().Next(1,3) |> float)
+    do! wait (System.Random().Next(5,10) |> float)
     state.cylons :=
      { 
       Position = Variable( fun() -> { X = 0.2f<m>; Y = state.borders.Y } )
-      Speed = Variable( fun() -> { X = 0.0f<m/s>; Y = -0.5f<m/s> } )
+      Speed = Variable( fun() -> { X = 0.0f<m/s>; Y = -0.1f<m/s> } )
      } :: !state.cylons
-    return! spawn_asteroids () 
+    return! spawn_cylons () 
    }
 
-  in (spawn_asteroids() .||> update_input() .||> shoot_projectiles()) |> ref
+  in (spawn_cylons() .||> update_input() .||> shoot_projectiles()) |> ref
 
 let update_script() = main.Value <- update_ai main.Value
