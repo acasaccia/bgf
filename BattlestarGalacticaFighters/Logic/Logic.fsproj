@@ -49,6 +49,7 @@
     <Compile Include="Vector2D.fs" />
     <Compile Include="Casanova.fs" />
     <Compile Include="Entities.fs" />
+    <Compile Include="Coroutines.fs" />
     <Compile Include="GameState.fs" />
   </ItemGroup>
   <ItemGroup>
