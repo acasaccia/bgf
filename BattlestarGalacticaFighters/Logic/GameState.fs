@@ -14,6 +14,7 @@ type GameState =
   projectiles : Variable<List<Projectile>>
   cylons : Variable<List<Cylon>>
   borders : Vector2D<m>
+  cylonSpeed : float32<m/s>
  }
 
 let state : GameState =
@@ -43,6 +44,7 @@ let state : GameState =
    Variable(fun () -> [])
   borders = 
    { X = 0.8f<m>; Y = 0.45f<m> }
+  cylonSpeed = 0.2f<m/s>
  }
 
 let rec update_state(dt:float32<s>) = 
@@ -143,7 +145,7 @@ let private main =
     state.cylons :=
      { 
       Position = Variable( fun() -> { X = 0.2f<m>; Y = state.borders.Y } )
-      Speed = Variable( fun() -> { X = 0.0f<m/s>; Y = -0.1f<m/s> } )
+      Speed = Variable( fun() -> { X = 0.0f<m/s>; Y = state.cylonSpeed } )
      } :: !state.cylons
     return! spawn_cylons () 
    }
