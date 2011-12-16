@@ -36,3 +36,10 @@ type Vector2D<[<Measure>] 'a> =
     static member (/)
         (v:Vector2D<'a>,f:float32<'b>):Vector2D<'a/'b> =
             v*(1.0f/f)
+
+    member this.Length : float32<'a> =
+        sqrt((this.X*this.X+this.Y*this.Y))
+
+    static member Distance
+        (v1:Vector2D<'a>,v2:Vector2D<'a>) =
+            (v1-v2).Length

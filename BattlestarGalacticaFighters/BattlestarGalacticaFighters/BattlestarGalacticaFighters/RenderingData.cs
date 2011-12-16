@@ -14,8 +14,8 @@ namespace BattlestarGalacticaFighters
 {
     class RenderingData
     {
-        public UInt16 backgroundPixelPerSecond = 64;
-        public Texture2D space;
+        public UInt16 backgroundPixelPerSecond = 32;
+        public Texture2D space, explosion, laser;
     }
 
     class Utilities
