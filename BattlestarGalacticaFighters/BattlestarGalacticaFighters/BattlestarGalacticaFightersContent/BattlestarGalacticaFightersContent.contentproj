@@ -60,7 +60,7 @@
       <Name>Cylon_Raider</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
-      <ProcessorParameters_Scale>0.01</ProcessorParameters_Scale>
+      <ProcessorParameters_Scale>0.015</ProcessorParameters_Scale>
       <ProcessorParameters_RotationX>270</ProcessorParameters_RotationX>
       <ProcessorParameters_RotationY>180</ProcessorParameters_RotationY>
     </Compile>
@@ -69,7 +69,7 @@
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
       <ProcessorParameters_RotationY>180</ProcessorParameters_RotationY>
-      <ProcessorParameters_Scale>0.012</ProcessorParameters_Scale>
+      <ProcessorParameters_Scale>0.015</ProcessorParameters_Scale>
       <ProcessorParameters_TextureFormat>NoChange</ProcessorParameters_TextureFormat>
       <ProcessorParameters_RotationX>270</ProcessorParameters_RotationX>
     </Compile>
@@ -109,8 +109,58 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="interface.spritefont">
+      <Name>interface</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+      <SubType>Designer</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="viper_gun.wav">
       <Name>viper_gun</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="explosion.wav">
+      <Name>explosion</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="red-explosion.png">
+      <Name>red-explosion</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="laser.png">
+      <Name>laser</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="commbeep.wav">
+      <Name>commbeep</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="overheated.wav">
+      <Name>overheated</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="alert.wav">
+      <Name>alert</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
     </Compile>
