@@ -7,7 +7,7 @@ open Casanova
 open Entities
 open Coroutines
 open Constants
-open BattlestarGalacticaFightersShared
+open Shared
 
 let state : GameState =
  {
@@ -95,7 +95,7 @@ and private update_viper (viper:Viper) (dt:float32<s>) =
 and private update_cylon (c:Cylon) (dt:float32<s>) =
  c.Position := !c.Position + !c.Speed * dt
  let colliders = [for p in !state.projectiles do
-                    if Vector2D.Distance(!c.Position, !p.Position) < convertFloat32ToM BattlestarGalacticaFightersShared.RenderingData.raiderBoundingRadius then
+                    if Vector2D.Distance(!c.Position, !p.Position) < convertFloat32ToM Shared.RenderingData.raiderBoundingRadius then
                      yield p] 
  c.Shields := !c.Shields - colliders.Length
  if colliders.Length > 0 then
@@ -107,7 +107,7 @@ and private update_cylon (c:Cylon) (dt:float32<s>) =
 and private update_projectile (p:Projectile) (dt:float32<s>) =
  p.Position := !p.Position + p.Speed * dt
  p.Colliders := [for c in !state.cylons do
-                    if Vector2D.Distance(!c.Position, !p.Position) < convertFloat32ToM BattlestarGalacticaFightersShared.RenderingData.raiderBoundingRadius then
+                    if Vector2D.Distance(!c.Position, !p.Position) < convertFloat32ToM Shared.RenderingData.raiderBoundingRadius then
                      yield c]
 
 and private update_explosion (e:Explosion) (dt:float32<s>) =

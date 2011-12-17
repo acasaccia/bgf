@@ -38,7 +38,7 @@ namespace BattlestarGalacticaFighters
         {
             Components.Add(new Rendering(this));
             Components.Add(new Audio(this));
-            Components.Add(new BattlestarGalacticaFightersShared.InputState(this));
+            Components.Add(new Shared.InputState(this));
             base.Initialize();
         }
 
