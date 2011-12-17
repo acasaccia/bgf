@@ -20,18 +20,12 @@ namespace BattlestarGalacticaFighters
         public Rendering(Game game)
             : base(game)
         {
-            game.Services.AddService(typeof(RenderingData), renderingData);
+            // TODO: Construct any child components here
         }
 
         public override void Initialize()
         {
             base.Initialize();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            Game.Services.RemoveService(typeof(RenderingData));
-            base.Dispose(disposing);
         }
 
         BasicEffect basic_effect;

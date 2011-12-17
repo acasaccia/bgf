@@ -46,4 +46,6 @@ type Vector2D<[<Measure>] 'a> =
             (v1-v2).Length
 
 let m : float32<m> = 1.0f<m>
+let ms : float32<m/s> = 1.0f<m/s>
 let convertFloat32ToM (x : float32) = x * m
+let convertFloat32ToMS (x : float32) = x * ms

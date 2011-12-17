@@ -48,9 +48,9 @@
     <Compile Include="Measures.fs" />
     <Compile Include="Utilities.fs" />
     <Compile Include="Casanova.fs" />
-    <Compile Include="Entities.fs" />
     <Compile Include="Coroutines.fs" />
     <Compile Include="Constants.fs" />
+    <Compile Include="Entities.fs" />
     <Compile Include="GameState.fs" />
   </ItemGroup>
   <ItemGroup>

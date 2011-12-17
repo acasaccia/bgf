@@ -12,9 +12,8 @@ using Microsoft.Xna.Framework.Media;
 
 namespace BattlestarGalacticaFightersShared
 {
-    /// <summary>
-    /// This is a game component that implements IUpdateable.
-    /// </summary>
+    /// This is here so it can be referenced by both Logic and Rendering components
+    /// avoiding circular references between projects
     public class InputState : Microsoft.Xna.Framework.GameComponent
     {
         public InputState(Game game)
