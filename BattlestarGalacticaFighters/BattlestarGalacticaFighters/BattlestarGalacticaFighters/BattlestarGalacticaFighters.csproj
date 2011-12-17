@@ -128,6 +128,10 @@
       <Project>{A2EB9102-F887-44C9-ABF8-A4163AD341DC}</Project>
       <Name>Logic</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Shared\Shared.csproj">
+      <Project>{4D24C6A5-299F-49C2-97EE-D6EED62C3A3A}</Project>
+      <Name>Shared</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BattlestarGalacticaFightersContent\BattlestarGalacticaFightersContent.contentproj">
       <Name>BattlestarGalacticaFightersContent %28Content%29</Name>
       <XnaReferenceType>Content</XnaReferenceType>
