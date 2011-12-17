@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
 
-namespace BattlestarGalacticaFightersInput
+namespace BattlestarGalacticaFightersShared
 {
     /// <summary>
     /// This is a game component that implements IUpdateable.
@@ -33,9 +33,6 @@ namespace BattlestarGalacticaFightersInput
 
             base.Initialize();
         }
-
-        KeyboardState prev_kb = new KeyboardState();
-        GamePadState prev_gamepad = new GamePadState();
 
         // These will be accessed by logic and will mask different input methods
         public static bool FireCannon;

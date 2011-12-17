@@ -1,6 +1,6 @@
 ﻿module Entities
 open Measures
-open Vector2D
+open Utilities
 open Casanova
 
 type GameState =
@@ -24,7 +24,6 @@ and Viper =
   IsShooting : Variable<bool>
   OverHeated : Variable<bool>
   Shields : Variable<int>
-  // Missiles : Variable<int<1>>
  }
 
 and Projectile = 

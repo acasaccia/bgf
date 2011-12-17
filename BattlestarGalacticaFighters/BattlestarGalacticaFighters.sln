@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattlestarGalacticaFighters
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Logic", "Logic\Logic.fsproj", "{A2EB9102-F887-44C9-ABF8-A4163AD341DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattlestarGalacticaFightersInput", "BattlestarGalacticaFightersInput\BattlestarGalacticaFightersInput.csproj", "{372DB878-802A-42FF-8A54-B272C14E56EB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattlestarGalacticaFightersShared", "BattlestarGalacticaFightersInput\BattlestarGalacticaFightersShared.csproj", "{372DB878-802A-42FF-8A54-B272C14E56EB}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
@@ -24,7 +24,7 @@ Global
 		SccProjectUniqueName3 = Logic\\Logic.fsproj
 		SccProjectName3 = Logic
 		SccLocalPath3 = Logic
-		SccProjectUniqueName4 = BattlestarGalacticaFightersInput\\BattlestarGalacticaFightersInput.csproj
+		SccProjectUniqueName4 = BattlestarGalacticaFightersInput\\BattlestarGalacticaFightersShared.csproj
 		SccProjectName4 = BattlestarGalacticaFightersInput
 		SccLocalPath4 = BattlestarGalacticaFightersInput
 	EndGlobalSection

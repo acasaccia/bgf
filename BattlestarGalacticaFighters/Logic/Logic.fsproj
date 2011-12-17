@@ -46,7 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Measures.fs" />
-    <Compile Include="Vector2D.fs" />
+    <Compile Include="Utilities.fs" />
     <Compile Include="Casanova.fs" />
     <Compile Include="Entities.fs" />
     <Compile Include="Coroutines.fs" />
@@ -54,8 +54,8 @@
     <Compile Include="GameState.fs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BattlestarGalacticaFightersInput\BattlestarGalacticaFightersInput.csproj">
-      <Name>BattlestarGalacticaFightersInput</Name>
+    <ProjectReference Include="..\BattlestarGalacticaFightersInput\BattlestarGalacticaFightersShared.csproj">
+      <Name>BattlestarGalacticaFightersShared</Name>
       <Project>{372db878-802a-42ff-8a54-b272c14e56eb}</Project>
       <Private>True</Private>
     </ProjectReference>
