@@ -51,7 +51,7 @@ let rec update_state(dt:float32<s>) =
      yield c]
  
  if escapedCylons.Length < (!state.cylons).Length then
-  state.galacticaShields := !state.galacticaShields - ( escapedCylons.Length ) * 5
+  state.galacticaShields := !state.galacticaShields - ( escapedCylons.Length ) * cylonDamage
   state.escapedCylons := true
  else
   state.galacticaShields := !state.galacticaShields
@@ -115,7 +115,7 @@ and private update_explosion (e:Explosion) (dt:float32<s>) =
  e.Position := !e.Position + e.Speed * dt
 
 //
-// Coroutines section
+// Coroutines
 //
 
 let private (!) = immediate_read
@@ -123,7 +123,7 @@ let private (:=) = immediate_write
 
 let private main =
 
-  let rec process_input() =
+  let process_input() =
    co {
     do! yield_
     // some shortcuts
@@ -160,7 +160,7 @@ let private main =
 
    } |> repeat_
 
-  let rec shoot_projectiles() = 
+  let shoot_projectiles() = 
    co {
     do! yield_
     // Trigger is pulled
@@ -188,23 +188,38 @@ let private main =
       do! wait ( (float) cannonCooldownTime )
    } |> repeat_
 
-  let rec spawn_cylons() = 
+  let cylon_ai(c:Cylon) =
+   co {
+    let random = System.Random()
+    do! wait (System.Random().Next(1,5) |> float)
+    let speedChange = System.Random().Next(-5,5)
+    let speed = convertFloat32ToMS ( (float32) speedChange / 10.0f )
+    c.Speed := { X = speed; Y = c.Speed.Value.X }
+   } |> repeat_
+
+  let spawn_cylons() = 
    let random = System.Random()
    co{
     do! wait (System.Random().Next(5,10) |> float)
     let enterPosition = System.Random().Next(-2,2)
     let pos = convertFloat32ToM ( (float32) enterPosition / 10.0f )
-    state.cylons :=
-     { 
-      Position = Variable( fun() -> { X = pos; Y = entitiesRemovalClamp.Y } )
-      Speed = Variable( fun() -> { X = 0.0f<m/s>; Y = -cylonSpeed } )
-      Yaw = Variable(fun() -> pi )
-      Colliders = Variable(fun () -> [])
-      Shields = Variable(fun() -> cylonShields)
-      Hit = Variable(fun() -> false)
-     } :: !state.cylons
+    let newborn = { 
+     Position = Variable( fun() -> { X = pos; Y = entitiesRemovalClamp.Y } )
+     Speed = Variable( fun() -> { X = 0.0f<m/s>; Y = -cylonSpeed } )
+     Yaw = Variable(fun() -> pi )
+     Colliders = Variable(fun () -> [])
+     Shields = Variable(fun() -> cylonShields)
+     Hit = Variable(fun() -> false)
+     AI = Variable(fun() -> co{ return () })
+    }
+    newborn.AI := cylon_ai(newborn)
+    state.cylons := newborn
+      :: !state.cylons
    } |> repeat_
 
   in (spawn_cylons() .||> process_input() .||> shoot_projectiles()) |> ref
 
-let update_script() = main.Value <- update_ai main.Value
+let update_script() =
+ main.Value <- update_ai main.Value
+ for c in !state.cylons
+  do c.AI := update_ai !c.AI

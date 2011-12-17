@@ -14,7 +14,8 @@ let pi = 3.14f<rad>
 
 // Cylon ships
 let cylonSpeed = 0.1f<m/s>
-let cylonShields = 7
+let cylonShields = 6
+let cylonDamage = 5
 
 // Viper (player ship)
 let maxSpeed = 0.4f<m/s>

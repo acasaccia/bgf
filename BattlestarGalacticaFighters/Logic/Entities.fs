@@ -2,6 +2,7 @@
 open Measures
 open Utilities
 open Casanova
+open Coroutines
 
 type GameState =
  {
@@ -41,6 +42,7 @@ and Cylon =
   Colliders : Variable<List<Projectile>>
   Shields : Variable<int>
   Hit : Variable<bool>
+  AI : Variable<Coroutine<Unit>>
  }
 
 and Explosion =
