@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using BattlestarGalacticaFightersShared;
+using Shared;
 
 namespace BattlestarGalacticaFighters
 {
@@ -168,11 +168,11 @@ namespace BattlestarGalacticaFighters
         {
             spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.LinearWrap, null, null);
 
-            if (BattlestarGalacticaFightersShared.InputState.MoveLeft == BattlestarGalacticaFightersShared.InputState.MoveRight)
+            if (Shared.InputState.MoveLeft == Shared.InputState.MoveRight)
                 horizontalScrollDirection = 0;
-            if (BattlestarGalacticaFightersShared.InputState.MoveLeft)
+            if (Shared.InputState.MoveLeft)
                 horizontalScrollDirection = 1;
-            if (BattlestarGalacticaFightersShared.InputState.MoveRight)
+            if (Shared.InputState.MoveRight)
                 horizontalScrollDirection = -1;
 
             // Update background position based on player's ship movement

@@ -7,9 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattlestarGalacticaFighters
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Logic", "Logic\Logic.fsproj", "{A2EB9102-F887-44C9-ABF8-A4163AD341DC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{4D24C6A5-299F-49C2-97EE-D6EED62C3A3A}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 4
+		SccNumberOfProjects = 5
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs37
 		SccLocalPath0 = .
@@ -22,6 +24,9 @@ Global
 		SccProjectUniqueName3 = Logic\\Logic.fsproj
 		SccProjectName3 = Logic
 		SccLocalPath3 = Logic
+		SccProjectUniqueName4 = Shared\\Shared.csproj
+		SccProjectName4 = Shared
+		SccLocalPath4 = Shared
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,6 +63,16 @@ Global
 		{A2EB9102-F887-44C9-ABF8-A4163AD341DC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{A2EB9102-F887-44C9-ABF8-A4163AD341DC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{A2EB9102-F887-44C9-ABF8-A4163AD341DC}.Release|x86.ActiveCfg = Release|Any CPU
+		{4D24C6A5-299F-49C2-97EE-D6EED62C3A3A}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{4D24C6A5-299F-49C2-97EE-D6EED62C3A3A}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{4D24C6A5-299F-49C2-97EE-D6EED62C3A3A}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{4D24C6A5-299F-49C2-97EE-D6EED62C3A3A}.Debug|x86.ActiveCfg = Debug|x86
+		{4D24C6A5-299F-49C2-97EE-D6EED62C3A3A}.Debug|x86.Build.0 = Debug|x86
+		{4D24C6A5-299F-49C2-97EE-D6EED62C3A3A}.Release|Any CPU.ActiveCfg = Release|x86
+		{4D24C6A5-299F-49C2-97EE-D6EED62C3A3A}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{4D24C6A5-299F-49C2-97EE-D6EED62C3A3A}.Release|Mixed Platforms.Build.0 = Release|x86
+		{4D24C6A5-299F-49C2-97EE-D6EED62C3A3A}.Release|x86.ActiveCfg = Release|x86
+		{4D24C6A5-299F-49C2-97EE-D6EED62C3A3A}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
