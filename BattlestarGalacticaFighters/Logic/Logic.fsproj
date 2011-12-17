@@ -53,13 +53,6 @@
     <Compile Include="Entities.fs" />
     <Compile Include="GameState.fs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\BattlestarGalacticaFightersInput\BattlestarGalacticaFightersShared.csproj">
-      <Name>BattlestarGalacticaFightersShared</Name>
-      <Project>{372db878-802a-42ff-8a54-b272c14e56eb}</Project>
-      <Private>True</Private>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\FSharp\1.0\Microsoft.FSharp.Targets" Condition="!Exists('$(MSBuildBinPath)\Microsoft.Build.Tasks.v4.0.dll')" />
   <Import Project="$(MSBuildExtensionsPath32)\..\Microsoft F#\v4.0\Microsoft.FSharp.Targets" Condition=" Exists('$(MSBuildBinPath)\Microsoft.Build.Tasks.v4.0.dll')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

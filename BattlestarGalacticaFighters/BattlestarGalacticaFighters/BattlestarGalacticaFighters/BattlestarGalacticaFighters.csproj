@@ -124,10 +124,6 @@
     <Content Include="GameThumbnail.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\BattlestarGalacticaFightersInput\BattlestarGalacticaFightersShared.csproj">
-      <Project>{372DB878-802A-42FF-8A54-B272C14E56EB}</Project>
-      <Name>BattlestarGalacticaFightersShared</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Logic\Logic.fsproj">
       <Project>{A2EB9102-F887-44C9-ABF8-A4163AD341DC}</Project>
       <Name>Logic</Name>
