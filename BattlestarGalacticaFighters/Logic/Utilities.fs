@@ -1,4 +1,5 @@
-﻿module Vector2D
+﻿module Utilities
+open Measures
 
 type Vector2D<[<Measure>] 'a> =
     {
@@ -43,3 +44,6 @@ type Vector2D<[<Measure>] 'a> =
     static member Distance
         (v1:Vector2D<'a>,v2:Vector2D<'a>) =
             (v1-v2).Length
+
+let m : float32<m> = 1.0f<m>
+let convertFloat32ToM (x : float32) = x * m

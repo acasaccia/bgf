@@ -2,12 +2,12 @@
 
 open System
 open Measures
-open Vector2D
+open Utilities
 open Casanova
 open Entities
 open Coroutines
 open Constants
-open BattlestarGalacticaFightersInput
+open BattlestarGalacticaFightersShared
 
 let state : GameState =
  {
@@ -26,7 +26,7 @@ let state : GameState =
   cylons = Variable(fun () -> [])
   explosions = Variable(fun () -> [])
   galacticaShields = Variable(fun () -> galacticashields)
-  gameTime = Variable(fun () -> timetoFTLonline)
+  gameTime = Variable(fun () -> gameDuration)
   escapedCylons = Variable( fun () -> false )
  }
 
@@ -51,7 +51,7 @@ let rec update_state(dt:float32<s>) =
      yield c]
  
  if escapedCylons.Length < (!state.cylons).Length then
-  state.galacticaShields := !state.galacticaShields - ( (!state.cylons).Length + escapedCylons.Length ) * 5
+  state.galacticaShields := !state.galacticaShields - ( escapedCylons.Length ) * 5
   state.escapedCylons := true
  else
   state.galacticaShields := !state.galacticaShields
@@ -67,26 +67,35 @@ let rec update_state(dt:float32<s>) =
     if (!p.Position).Y < entitiesRemovalClamp.Y && (!p.Colliders).Length < 1 then
      yield p]
 
- state.explosions :=
-  [for e in !state.explosions do
+ state.explosions := 
+  List.concat [
+   [for e in !state.explosions do
     if !e.Time > 0.0f<s> then
-     yield e]
+     yield e];
+   [for c in !state.cylons do
+     if !c.Shields < 1 then
+      yield {
+        Position = Variable( fun () -> !c.Position )
+        Speed = !c.Speed / 2.0f
+        Time = Variable( fun () -> explosionDuration )
+       }]
+  ]
 
 and private update_viper (viper:Viper) (dt:float32<s>) = 
  viper.Position := !viper.Position + !viper.Speed * dt
  viper.Roll := !viper.Roll + !viper.RollSpeed * dt
-
- // these two flags will be eventually set by coroutines
+ if (not InputState.FireCannon && !viper.CannonTemperature > 0.0f<f>) then
+  viper.CannonTemperature := !viper.CannonTemperature - cannonCooldownRate * dt
+ else
+  viper.CannonTemperature := !viper.CannonTemperature
+ // these two flags will be eventually raised for a single frame by coroutines
  viper.OverHeated := false
  viper.IsShooting := false
-
- if (not InputState.FireCannon && !viper.CannonTemperature > 0.0f<f>) then
-    viper.CannonTemperature := !viper.CannonTemperature - cannonCooldownRate * dt
 
 and private update_cylon (c:Cylon) (dt:float32<s>) =
  c.Position := !c.Position + !c.Speed * dt
  let colliders = [for p in !state.projectiles do
-                    if Vector2D.Distance(!c.Position, !p.Position) < collisionDistance then
+                    if Vector2D.Distance(!c.Position, !p.Position) < convertFloat32ToM BattlestarGalacticaFightersShared.RenderingData.raiderBoundingRadius then
                      yield p] 
  c.Shields := !c.Shields - colliders.Length
  if colliders.Length > 0 then
@@ -98,20 +107,25 @@ and private update_cylon (c:Cylon) (dt:float32<s>) =
 and private update_projectile (p:Projectile) (dt:float32<s>) =
  p.Position := !p.Position + p.Speed * dt
  p.Colliders := [for c in !state.cylons do
-                    if Vector2D.Distance(!c.Position, !p.Position) < collisionDistance then
+                    if Vector2D.Distance(!c.Position, !p.Position) < convertFloat32ToM BattlestarGalacticaFightersShared.RenderingData.raiderBoundingRadius then
                      yield c]
 
 and private update_explosion (e:Explosion) (dt:float32<s>) =
  e.Time := !e.Time - dt
  e.Position := !e.Position + e.Speed * dt
 
+//
+// Coroutines section
+//
+
 let private (!) = immediate_read
 let private (:=) = immediate_write
 
 let private main =
 
-  let rec update_input() =
+  let rec process_input() =
    co {
+    do! yield_
     // some shortcuts
     let speed = state.viper.Speed
     let rollSpeed = state.viper.RollSpeed
@@ -136,73 +150,61 @@ let private main =
      rollSpeed := !rollSpeed - maxRollSpeed
     
     if InputState.MoveRight = InputState.MoveLeft then
-     if currentRoll < 0.1f<rad> && currentRoll > - 0.1f<rad>  then
-      rollSpeed := 0.0f<rad/s>
-     else if currentRoll > 0.1f<rad> then
+     if currentRoll > 0.1f<rad> then
       rollSpeed := !rollSpeed - maxRollSpeed
      else if currentRoll < 0.1f<rad> then
        rollSpeed := !rollSpeed + maxRollSpeed
+     else
+      state.viper.Roll := 0.0f<rad>
+      rollSpeed := 0.0f<rad/s>
 
-    do! yield_
-    return! update_input()
-   }
+   } |> repeat_
 
-  // Generate a projectile if trigger is pulled, then wait the right amount before we can shoot again.
-  // When shooting cannon heats up. If max temperature is reached we can't shoot until cooldown time has passed.
   let rec shoot_projectiles() = 
    co {
     do! yield_
+    // Trigger is pulled
     if InputState.FireCannon then
-     // shoot a projectile
+     // Check that cannon is not to hot
      if !state.viper.CannonTemperature < cannonMaxTemperature then
+      // Ok to frag some toasters
       state.projectiles :=
        {
         Position = Variable( fun () -> !state.viper.Position )
         Speed = viperProjectilesSpeed
         Colliders = Variable(fun () -> [])
        } :: !state.projectiles
+       // Update temperature
        state.viper.CannonTemperature := !state.viper.CannonTemperature + cannonShootHeating
+       // Raise flag to play shooting sound
        state.viper.IsShooting := true
        if ( !state.viper.CannonTemperature > cannonMaxTemperature ) then
+        // Cannon got too hot: clamp temperature to max value and play sound
         state.viper.CannonTemperature := cannonMaxTemperature
         state.viper.OverHeated := true
        do! wait ( (float) cannonShootingTime )
      else
-       do! wait ( (float) cannonCooldownTime )
-    return! shoot_projectiles() 
-   }
+      // Cannon too hot, let's wait
+      do! wait ( (float) cannonCooldownTime )
+   } |> repeat_
 
   let rec spawn_cylons() = 
    let random = System.Random()
    co{
     do! wait (System.Random().Next(5,10) |> float)
     let enterPosition = System.Random().Next(-2,2)
-    let m : float32<m> = 1.0f<m>
-    let convertToM (x : float32) = x * m
-    let pos = convertToM ( (float32) enterPosition / 10.0f )
+    let pos = convertFloat32ToM ( (float32) enterPosition / 10.0f )
     state.cylons :=
      { 
       Position = Variable( fun() -> { X = pos; Y = entitiesRemovalClamp.Y } )
       Speed = Variable( fun() -> { X = 0.0f<m/s>; Y = -cylonSpeed } )
-      Yaw = Variable(fun() -> 3.14f<rad> )
+      Yaw = Variable(fun() -> pi )
       Colliders = Variable(fun () -> [])
       Shields = Variable(fun() -> cylonShields)
       Hit = Variable(fun() -> false)
      } :: !state.cylons
-    return! spawn_cylons () 
-   }
+   } |> repeat_
 
-//  let rec generate_explosions() = 
-//   co{
-//    do! yield_
-//    for c in !state.cylons do
-//     if c.Shields <= 0 then
-//      printf "ui"
-//    return! generate_explosions () 
-//   }
-
-//  in (generate_explosions() .||> spawn_cylons() .||> update_input() .||> shoot_projectiles()) |> ref
-
-  in (spawn_cylons() .||> update_input() .||> shoot_projectiles()) |> ref
+  in (spawn_cylons() .||> process_input() .||> shoot_projectiles()) |> ref
 
 let update_script() = main.Value <- update_ai main.Value

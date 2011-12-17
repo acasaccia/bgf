@@ -46,16 +46,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cylon_Heavy_Raider.fbx">
-      <Name>Cylon_Heavy_Raider</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-      <ProcessorParameters_Scale>0.01</ProcessorParameters_Scale>
-      <ProcessorParameters_RotationX>270</ProcessorParameters_RotationX>
-      <ProcessorParameters_RotationY>180</ProcessorParameters_RotationY>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Cylon_Raider.fbx">
       <Name>Cylon_Raider</Name>
       <Importer>FbxImporter</Importer>
@@ -87,11 +77,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Textures\Cylon_Heavy_Raider\M_01___Default2.jpg">
-      <Name>M_01___Default2</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
     <Compile Include="Textures\Cylon_Raider\M_01___Default3.jpg">
       <Name>M_01___Default3</Name>
       <Importer>TextureImporter</Importer>
@@ -131,8 +116,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="red-explosion.png">
-      <Name>red-explosion</Name>
+    <Compile Include="explosion_animation.png">
+      <Name>explosion_animation</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -163,6 +148,13 @@
       <Name>alert</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="space_dust.png">
+      <Name>space_dust</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
