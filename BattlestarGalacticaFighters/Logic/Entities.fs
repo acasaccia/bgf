@@ -12,7 +12,7 @@ type GameState =
   explosions : Variable<List<Explosion>>
   galacticaShields : Variable<int>
   gameTime : Variable<float32<s>>
-  escapedCylons : Variable<bool>
+  escapedCylons : Variable<List<Cylon>>
  }
 
 and Viper = 
@@ -25,6 +25,7 @@ and Viper =
   IsShooting : Variable<bool>
   OverHeated : Variable<bool>
   Shields : Variable<int>
+  Colliders : Variable<List<Cylon>>
  }
 
 and Projectile = 
@@ -41,7 +42,6 @@ and Cylon =
   Yaw : Variable<float32<rad>>
   Colliders : Variable<List<Projectile>>
   Shields : Variable<int>
-  Hit : Variable<bool>
   AI : Variable<Coroutine<Unit>>
  }
 

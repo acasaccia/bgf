@@ -52,7 +52,11 @@ namespace BattlestarGalacticaFighters
             // TODO: Add your update code here
             if (GameState.state.viper.IsShooting.Value) viperGun.Play(0.3f, 0.0f, 0.0f);
             if (GameState.state.viper.OverHeated.Value) overHeated.Play(0.6f, 0.0f, 0.0f);
-            if (GameState.state.escapedCylons.Value) alert.Play(0.6f, 0.0f, 0.0f);
+            IList<Entities.Cylon> escapedCylons = GameState.state.escapedCylons.Value.ToList();
+            bool cylonEscapes = false;
+            if(escapedCylons.Count > 0)
+                cylonEscapes = true;
+            if (cylonEscapes) alert.Play(0.6f, 0.0f, 0.0f);
             IList<Entities.Cylon> cylons = GameState.state.cylons.Value.ToList();
             bool cylonExplodes = false;
             foreach (Entities.Cylon cylon in cylons)

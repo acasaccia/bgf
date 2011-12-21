@@ -3,8 +3,10 @@ open Measures
 open Utilities
 
 // Rendering dependent parameters
-let entitiesRemovalClamp = { X = 0.8f<m>; Y = 0.6f<m> }
-let viperPositionClamp = { X = 0.8f<m>; Y = 0.45f<m> }
+let entitiesRemovalClampX = convertFloat32ToM ( Shared.RenderingData.viewPort.AspectRatio / 2.0f + Shared.RenderingData.viewPort.AspectRatio / 100.0f * 5.0f );
+let entitiesRemovalClamp = { X = entitiesRemovalClampX; Y = 0.55f<m> }
+let viperClampX = convertFloat32ToM ( Shared.RenderingData.viewPort.AspectRatio / 2.0f - Shared.RenderingData.viewPort.AspectRatio / 100.0f * 5.0f );
+let viperPositionClamp = { X = viperClampX; Y = 0.35f<m> }
 
 // World constants
 let galacticashields = 100
@@ -13,9 +15,13 @@ let explosionDuration = 1.0f<s>
 let pi = 3.14f<rad>
 
 // Cylon ships
-let cylonSpeed = 0.1f<m/s>
-let cylonShields = 6
+let cylonSpeed = 0.4f<m/s>
+let cylonShields = 5
+let cylonShieldsWarning = 2
 let cylonDamage = 5
+let cylonProjectilesSpeed = { X = 0.0f<m/s>; Y = 1.0f<m/s> }
+let cylonBoundingRadius = convertFloat32ToM Shared.RenderingData.raiderBoundingRadius
+let viperBoundingRadius = convertFloat32ToM Shared.RenderingData.viperMarkIIBoundingRadius
 
 // Viper (player ship)
 let maxSpeed = 0.4f<m/s>
@@ -27,4 +33,4 @@ let cannonCooldownTime = 1.0f<s>
 let cannonCooldownRate = 20.0f<f/s>
 let cannonMaxTemperature = 100.0f<f>
 let viperProjectilesSpeed = { X = 0.0f<m/s>; Y = 1.0f<m/s> }
-let vipershields = 3
+let vipershields = 5

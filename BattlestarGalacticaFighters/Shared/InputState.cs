@@ -9,11 +9,13 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
-
+/// 
+/// This is here so it can be referenced by both Logic and Rendering components
+/// avoiding circular references between projects
+/// 
 namespace Shared
 {
-    /// This is here so it can be referenced by both Logic and Rendering components
-    /// avoiding circular references between projects
+
     public class InputState : Microsoft.Xna.Framework.GameComponent
     {
         public InputState(Game game)
