@@ -45,7 +45,12 @@ type Vector2D<[<Measure>] 'a> =
         (v1:Vector2D<'a>,v2:Vector2D<'a>) =
             (v1-v2).Length
 
+    static member Normalize(v:Vector2D<'a>):Vector2D<1> =
+        v/v.Length
+
 let m : float32<m> = 1.0f<m>
 let ms : float32<m/s> = 1.0f<m/s>
 let convertFloat32ToM (x : float32) = x * m
 let convertFloat32ToMS (x : float32) = x * ms
+
+let convertVectorToVectorMS (x : Vector2D<_>) = x * ms

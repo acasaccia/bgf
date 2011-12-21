@@ -22,9 +22,9 @@ namespace BattlestarGalacticaFighters
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
-            graphics.IsFullScreen = false;
-            graphics.PreferredBackBufferWidth = 1280;
-            graphics.PreferredBackBufferHeight = 720;
+            graphics.IsFullScreen = true;
+            graphics.PreferredBackBufferWidth = 1440;
+            graphics.PreferredBackBufferHeight = 900;
             Content.RootDirectory = "Content";
         }
 
@@ -74,7 +74,6 @@ namespace BattlestarGalacticaFighters
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            // TODO: Add your update logic here
             var dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             GameState.update_state(dt);

@@ -34,6 +34,8 @@ namespace BattlestarGalacticaFighters
         int vertical_background_replication, horizontal_background_replication;
         protected override void LoadContent()
         {
+            RenderingData.viewPort = GraphicsDevice.Viewport;
+
             spriteBatch = new SpriteBatch(GraphicsDevice);
             renderingData.gameInterface = Game.Content.Load<SpriteFont>("interface");
 
@@ -42,7 +44,7 @@ namespace BattlestarGalacticaFighters
 
             // Initialize scrolling background
             renderingData.space = Game.Content.Load<Texture2D>("space");
-            renderingData.space_dust = Game.Content.Load<Texture2D>("space_dust");
+            renderingData.spaceDust = Game.Content.Load<Texture2D>("space_dust");
 
             // Initialize 3d models
             renderingData.viperMarkII = Game.Content.Load<Model>("Viper_Mk_II");
@@ -108,6 +110,25 @@ namespace BattlestarGalacticaFighters
             GraphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
 
             Entities.Viper viper = GameState.state.viper;
+            IList<Entities.Cylon> viperColliders = GameState.state.viper.Colliders.Value.ToList();
+            if (viperColliders.Count > 0)
+                foreach (var mesh in renderingData.viperMarkII.Meshes)
+                {
+                    foreach (BasicEffect fx in mesh.Effects)
+                    {
+                        fx.AmbientLightColor = Color.Yellow.ToVector3();
+                    }
+                }
+            else
+                foreach (var mesh in renderingData.viperMarkII.Meshes)
+                {
+                    foreach (BasicEffect fx in mesh.Effects)
+                    {
+                        fx.SpecularColor = Color.White.ToVector3();
+                        fx.DiffuseColor = Color.Gray.ToVector3();
+                        fx.AmbientLightColor = Color.White.ToVector3();
+                    }
+                }
 
             renderingData.viperMarkII.Draw(
                 basic_effect.World
@@ -118,10 +139,10 @@ namespace BattlestarGalacticaFighters
             );
 
             IList<Entities.Cylon> cylons = GameState.state.cylons.Value.ToList();
-
             foreach (Entities.Cylon cylon in cylons)
             {
-                if ( cylon.Shields.Value <= 3 && ((int) gameTime.TotalGameTime.TotalMilliseconds / 150) % 2 == 0 )
+                IList<Entities.Projectile> cylonColliders = cylon.Colliders.Value.ToList();
+                if (cylon.Shields.Value < Constants.cylonShieldsWarning && ((int)gameTime.TotalGameTime.TotalMilliseconds / 150) % 2 == 0)
                  foreach (var mesh in renderingData.raider.Meshes)
                   {
                     foreach (BasicEffect fx in mesh.Effects)
@@ -129,7 +150,7 @@ namespace BattlestarGalacticaFighters
                       fx.AmbientLightColor = Color.Red.ToVector3();
                     }
                   }
-                else if ( cylon.Hit.Value )
+                else if (cylonColliders.Count > 0)
                     foreach (var mesh in renderingData.raider.Meshes)
                     {
                         foreach (BasicEffect fx in mesh.Effects)
@@ -176,15 +197,15 @@ namespace BattlestarGalacticaFighters
                 horizontalScrollDirection = -1;
 
             // Update background position based on player's ship movement
-            backgroundPosition.X = backgroundPosition.X + horizontalScrollDirection * (float)gameTime.ElapsedGameTime.TotalSeconds * renderingData.backgroundScrollSpeed;
+            backgroundPosition.X = backgroundPosition.X + horizontalScrollDirection * (float)gameTime.ElapsedGameTime.TotalSeconds * RenderingData.backgroundScrollSpeed;
             //cloudsPosition.X = cloudsPosition.X + horizontalScrollDirection * (float)gameTime.ElapsedGameTime.TotalSeconds * renderingData.cloudsScrollSpeed;
-            backgroundPosition.Y += (float)gameTime.ElapsedGameTime.TotalSeconds * renderingData.backgroundScrollSpeed;
-            cloudsPosition.Y += (float)gameTime.ElapsedGameTime.TotalSeconds * renderingData.cloudsScrollSpeed;
+            backgroundPosition.Y += (float)gameTime.ElapsedGameTime.TotalSeconds * RenderingData.backgroundScrollSpeed;
+            cloudsPosition.Y += (float)gameTime.ElapsedGameTime.TotalSeconds * RenderingData.cloudsScrollSpeed;
 
             // Clamp position to avoid overflow
             backgroundPosition.X = backgroundPosition.X % renderingData.space.Width;
             backgroundPosition.Y = backgroundPosition.Y % renderingData.space.Height;
-            cloudsPosition.Y = cloudsPosition.Y % renderingData.space_dust.Height;
+            cloudsPosition.Y = cloudsPosition.Y % renderingData.spaceDust.Height;
 
             spriteBatch.Draw(
                 renderingData.space,
@@ -194,7 +215,7 @@ namespace BattlestarGalacticaFighters
             );
 
             spriteBatch.Draw(
-                renderingData.space_dust,
+                renderingData.spaceDust,
                 Vector2.Zero,
                 new Rectangle((int)cloudsPosition.X, -(int)cloudsPosition.Y, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height),
                 Color.White
