@@ -114,6 +114,7 @@
   <ItemGroup>
     <Compile Include="Audio.cs" />
     <Compile Include="Conversions.cs" />
+    <Compile Include="FrameRateCounter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />

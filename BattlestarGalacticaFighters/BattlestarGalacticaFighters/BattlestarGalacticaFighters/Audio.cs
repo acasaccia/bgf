@@ -34,37 +34,42 @@ namespace BattlestarGalacticaFighters
             base.Initialize();
         }
 
-        SoundEffect viperGun, explosion, overHeated, alert;
+        SoundEffect viperGun, raiderGun, explosion, overHeated, hit;
         protected override void LoadContent()
         {
             viperGun = Game.Content.Load<SoundEffect>("viper_gun");
+            raiderGun = Game.Content.Load<SoundEffect>("raider_gun");
             explosion = Game.Content.Load<SoundEffect>("explosion");
             overHeated = Game.Content.Load<SoundEffect>("overheated");
-            alert = Game.Content.Load<SoundEffect>("alert");
+            hit = Game.Content.Load<SoundEffect>("hit");
         }
 
-        /// <summary>
-        /// Allows the game component to update itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        double previousCollisionTime = -10.0;
+        int previousShieldValue = 0;
         public override void Update(GameTime gameTime)
         {
-            // TODO: Add your update code here
             if (GameState.state.viper.IsShooting.Value) viperGun.Play(0.3f, 0.0f, 0.0f);
             if (GameState.state.viper.OverHeated.Value) overHeated.Play(0.6f, 0.0f, 0.0f);
-            IList<Entities.Cylon> escapedCylons = GameState.state.escapedCylons.Value.ToList();
-            bool cylonEscapes = false;
-            if(escapedCylons.Count > 0)
-                cylonEscapes = true;
-            if (cylonEscapes) alert.Play(0.6f, 0.0f, 0.0f);
+
             IList<Entities.Cylon> cylons = GameState.state.cylons.Value.ToList();
-            bool cylonExplodes = false;
+            bool cylonExplodes = false, cylonShoots = false, cylonHit = false;
             foreach (Entities.Cylon cylon in cylons)
             {
+                IList<Entities.Projectile> cylonColliders = cylon.Colliders.Value.ToList();
                 if (cylon.Shields.Value == 0)
                     cylonExplodes = true;
+                if (cylon.IsShooting.Value)
+                    cylonShoots = true;
+                if (cylonColliders.Count > 0)
+                    cylonHit = true;
             }
-            if (cylonExplodes) explosion.Play();
+            bool viperExplodes = GameState.state.viper.Shields.Value == 0 && previousShieldValue > 0;
+            if (cylonExplodes || viperExplodes) explosion.Play();
+            if (cylonShoots) raiderGun.Play(0.3f, 0.0f, 0.0f);
+            if (GameState.state.viper.LastCollisionTime.Value > previousCollisionTime || cylonHit) hit.Play(0.3f, 0.0f, 0.0f);
+            previousCollisionTime = GameState.state.viper.LastCollisionTime.Value;
+            previousShieldValue = GameState.state.viper.Shields.Value;
+            
             base.Update(gameTime);
         }
     }

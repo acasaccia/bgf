@@ -12,7 +12,7 @@ namespace Shared
         public const int backgroundScrollSpeed = 48; // pixels per second
         public const int cloudsScrollSpeed = 256; // pixels per second
         public Model viperMarkII, raider;
-        public Texture2D space, spaceDust, explosion, laser;
+        public Texture2D space, spaceDust, explosion, laser, energyCells;
         public SpriteFont gameInterface;
 
         // This members are static for quick access from Logic
