@@ -22,9 +22,11 @@ namespace BattlestarGalacticaFighters
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
-            graphics.IsFullScreen = true;
-            graphics.PreferredBackBufferWidth = 1440;
-            graphics.PreferredBackBufferHeight = 900;
+            #if DEBUG
+                graphics.IsFullScreen = false;
+            #endif
+            graphics.PreferredBackBufferWidth = 1270;
+            graphics.PreferredBackBufferHeight = 720;
             Content.RootDirectory = "Content";
         }
 
@@ -39,6 +41,9 @@ namespace BattlestarGalacticaFighters
             Components.Add(new Rendering(this));
             Components.Add(new Audio(this));
             Components.Add(new Shared.InputState(this));
+            #if DEBUG
+                Components.Add(new FrameRateCounter(this));
+            #endif
             base.Initialize();
         }
 

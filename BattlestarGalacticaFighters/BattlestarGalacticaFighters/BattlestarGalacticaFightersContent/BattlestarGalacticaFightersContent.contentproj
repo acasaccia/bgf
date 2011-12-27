@@ -130,8 +130,22 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="commbeep.wav">
-      <Name>commbeep</Name>
+    <Compile Include="space_dust.png">
+      <Name>space_dust</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="energy_cells.png">
+      <Name>energy_cells</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="raider_gun.wav">
+      <Name>raider_gun</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
     </Compile>
@@ -144,17 +158,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="alert.wav">
-      <Name>alert</Name>
+    <Compile Include="hit.wav">
+      <Name>hit</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="space_dust.png">
-      <Name>space_dust</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
