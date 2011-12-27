@@ -63,11 +63,6 @@
       <ProcessorParameters_TextureFormat>NoChange</ProcessorParameters_TextureFormat>
       <ProcessorParameters_RotationX>270</ProcessorParameters_RotationX>
     </Compile>
-    <Compile Include="Viper_Mk_VII.fbx">
-      <Name>Viper_Mk_VII</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="space.jpg">
@@ -84,11 +79,6 @@
     </Compile>
     <Compile Include="Textures\Viper_Mk_II\M_01___Default1.JPG">
       <Name>M_01___Default1</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Textures\Viper_Mk_VII\M_01___Default2.jpg">
-      <Name>M_01___Default2</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
