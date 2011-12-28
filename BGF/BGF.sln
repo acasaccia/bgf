@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattlestarGalacticaFighters", "BattlestarGalacticaFighters\BattlestarGalacticaFighters\BattlestarGalacticaFighters.csproj", "{67BC76C0-880B-4D89-8F5B-C1442DC4ABEB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BGF", "BattlestarGalacticaFighters\BattlestarGalacticaFighters\BGF.csproj", "{67BC76C0-880B-4D89-8F5B-C1442DC4ABEB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattlestarGalacticaFightersContent", "BattlestarGalacticaFighters\BattlestarGalacticaFightersContent\BattlestarGalacticaFightersContent.contentproj", "{3868B0FC-7047-4254-9DF0-4EF5CAD56552}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BGFContent", "BattlestarGalacticaFighters\BattlestarGalacticaFightersContent\BGFContent.contentproj", "{3868B0FC-7047-4254-9DF0-4EF5CAD56552}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Logic", "Logic\Logic.fsproj", "{A2EB9102-F887-44C9-ABF8-A4163AD341DC}"
 EndProject
@@ -14,19 +14,19 @@ Global
 		SccNumberOfProjects = 5
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs37
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = BattlestarGalacticaFighters\\BattlestarGalacticaFighters\\BattlestarGalacticaFighters.csproj
-		SccProjectName1 = BattlestarGalacticaFighters/BattlestarGalacticaFighters
-		SccLocalPath1 = BattlestarGalacticaFighters\\BattlestarGalacticaFighters
-		SccProjectUniqueName2 = BattlestarGalacticaFighters\\BattlestarGalacticaFightersContent\\BattlestarGalacticaFightersContent.contentproj
-		SccProjectName2 = BattlestarGalacticaFighters/BattlestarGalacticaFightersContent
-		SccLocalPath2 = BattlestarGalacticaFighters\\BattlestarGalacticaFightersContent
-		SccProjectUniqueName3 = Logic\\Logic.fsproj
-		SccProjectName3 = Logic
-		SccLocalPath3 = Logic
-		SccProjectUniqueName4 = Shared\\Shared.csproj
-		SccProjectName4 = Shared
-		SccLocalPath4 = Shared
+		SccProjectUniqueName0 = Logic\\Logic.fsproj
+		SccProjectName0 = Logic
+		SccLocalPath0 = Logic
+		SccProjectUniqueName1 = Shared\\Shared.csproj
+		SccProjectName1 = Shared
+		SccLocalPath1 = Shared
+		SccProjectUniqueName2 = BattlestarGalacticaFighters\\BattlestarGalacticaFighters\\BGF.csproj
+		SccProjectName2 = BattlestarGalacticaFighters/BattlestarGalacticaFighters
+		SccLocalPath2 = BattlestarGalacticaFighters\\BattlestarGalacticaFighters
+		SccProjectUniqueName3 = BattlestarGalacticaFighters\\BattlestarGalacticaFightersContent\\BGFContent.contentproj
+		SccProjectName3 = BattlestarGalacticaFighters/BattlestarGalacticaFightersContent
+		SccLocalPath3 = BattlestarGalacticaFighters\\BattlestarGalacticaFightersContent
+		SccLocalPath4 = .
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
