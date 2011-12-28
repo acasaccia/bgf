@@ -266,9 +266,12 @@ namespace BattlestarGalacticaFighters
 
             string msg = "Score: " + ((int)GameState.state.elapsedTime.Value * 10 + GameState.state.cylonsFragged.Value * 100).ToString();
 
-            int temperatureLabelOffset = (int)contentData.gameFont.MeasureString("Temperature: ||||||||||||||||||||||||||||||").X + 10;
-            int shieldsLabelOffset = (int)contentData.gameFont.MeasureString("Shields: ||||||||||||||||||||||||||||||").X + 10;
-            int rightBarsOffset = (int)contentData.gameFont.MeasureString("||||||||||||||||||||||||||||||").X + 10;
+            // advanced sprites tecmology
+            string bar = "||||||||||||||||||||||||||||||";
+
+            int temperatureLabelOffset = (int)contentData.gameFont.MeasureString("Temperature: " + bar).X + 10;
+            int shieldsLabelOffset = (int)contentData.gameFont.MeasureString("Shields: " + bar).X + 10;
+            int rightBarsOffset = (int)contentData.gameFont.MeasureString(bar).X + 10;
             int charHeight = (int)(int)contentData.gameFont.MeasureString("|").Y;
 
             spriteBatch.DrawString(contentData.gameFont, "Temperature: ", new Vector2(GraphicsDevice.Viewport.Width - temperatureLabelOffset, GraphicsDevice.Viewport.Height - charHeight), cannonInterfaceColor);
@@ -281,6 +284,11 @@ namespace BattlestarGalacticaFighters
 
             spriteBatch.DrawString(contentData.gameFont, msg, new Vector2(10, GraphicsDevice.Viewport.Height - 2 * charHeight), Color.LimeGreen);
             spriteBatch.DrawString(contentData.gameFont, "Time elapsed: " + String.Format("{0:00}", minutes) + ':' + String.Format("{0:00}", seconds), new Vector2(10, GraphicsDevice.Viewport.Height - charHeight), Color.LimeGreen);
+
+            if (GameState.state.gameOver.Value) {
+                MediaPlayer.Volume = 1.0f;
+                spriteBatch.Draw(contentData.gameOver,new Vector2((int)(GraphicsDevice.Viewport.Width - contentData.gameOver.Width)/2, GraphicsDevice.Viewport.Height/2), Color.White);
+            }
 
             spriteBatch.End();
         }
