@@ -8,16 +8,14 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using Shared;
 
 namespace BattlestarGalacticaFighters
 {
-    /// <summary>
-    /// This is the main type for your game
-    /// </summary>
+
     public class Game1 : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
 
         public Game1()
         {
@@ -28,62 +26,93 @@ namespace BattlestarGalacticaFighters
             graphics.PreferredBackBufferWidth = 1270;
             graphics.PreferredBackBufferHeight = 720;
             Content.RootDirectory = "Content";
+            this.Services.AddService(typeof(ContentData), contentData);
         }
 
-        /// <summary>
-        /// Allows the game to perform any initialization it needs to before starting to run.
-        /// This is where it can query for any required services and load any non-graphic
-        /// related content.  Calling base.Initialize will enumerate through any components
-        /// and initialize them as well.
-        /// </summary>
         protected override void Initialize()
         {
-            Components.Add(new Rendering(this));
-            Components.Add(new Audio(this));
-            Components.Add(new Shared.InputState(this));
-            #if DEBUG
-                Components.Add(new FrameRateCounter(this));
-            #endif
+            Components.Add(new Menu(this));
             base.Initialize();
         }
 
-        /// <summary>
-        /// LoadContent will be called once per game and is the place to load
-        /// all of your content.
-        /// </summary>
+        ContentData contentData = new ContentData();
+        SpriteBatch spriteBatch;
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            ContentData.viewPort = GraphicsDevice.Viewport;
 
-            // TODO: use this.Content to load your game content here
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+            contentData.gameFont = Content.Load<SpriteFont>("interface");
+            contentData.menuFont = Content.Load<SpriteFont>("menu");
+
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+            contentData.logo = Content.Load<Texture2D>("logo");
+            contentData.menu = Content.Load<Song>("Battlestar Galactica Opening");
+            contentData.inGame = Content.Load<Song>("All Along The Watchtower");
+
+            // Projectiles and fx
+            contentData.explosion = Content.Load<Texture2D>("explosion_animation");
+            contentData.laser = Content.Load<Texture2D>("laser");
+            contentData.energyCells = Content.Load<Texture2D>("energy_cells");
+
+            // Scrolling background
+            contentData.space = Content.Load<Texture2D>("space");
+            contentData.spaceDust = Content.Load<Texture2D>("space_dust");
+
+            // 3d models
+            contentData.viperMarkII = Content.Load<Model>("Viper_Mk_II");
+            BoundingSphere boundingSphere = new BoundingSphere();
+            foreach (var mesh in contentData.viperMarkII.Meshes)
+            {
+                foreach (BasicEffect fx in mesh.Effects)
+                {
+                    fx.EnableDefaultLighting();
+                    fx.SpecularColor = Color.White.ToVector3();
+                    fx.DiffuseColor = Color.Gray.ToVector3();
+                    fx.AmbientLightColor = Color.White.ToVector3();
+                }
+                boundingSphere = BoundingSphere.CreateMerged(boundingSphere, mesh.BoundingSphere);
+            }
+            ContentData.viperMarkIIBoundingRadius = boundingSphere.Radius;
+
+            contentData.raider = Content.Load<Model>("Cylon_Raider");
+            boundingSphere = new BoundingSphere();
+            foreach (var mesh in contentData.raider.Meshes)
+            {
+                foreach (BasicEffect fx in mesh.Effects)
+                {
+                    fx.EnableDefaultLighting();
+                    fx.SpecularColor = Color.Gray.ToVector3();
+                    fx.DiffuseColor = Color.Gray.ToVector3();
+                    fx.AmbientLightColor = Color.White.ToVector3();
+                }
+                boundingSphere = BoundingSphere.CreateMerged(boundingSphere, mesh.BoundingSphere);
+            }
+            ContentData.raiderBoundingRadius = boundingSphere.Radius;
+
+            // Initialize menu background music
+            MediaPlayer.Volume = 1.0f;
+            MediaPlayer.Play(contentData.menu);
         }
 
-        /// <summary>
-        /// UnloadContent will be called once per game and is the place to unload
-        /// all content.
-        /// </summary>
         protected override void UnloadContent()
         {
             // TODO: Unload any non ContentManager content here
         }
 
-        /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-                this.Exit();
-
-            var dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            GameState.update_state(dt);
-            GameState.update_script();
-            Casanova.commit_variable_updates();
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
+                while (Components.Count > 0)
+                {
+                    ((GameComponent) Components[0]).Dispose();
+                }
+                Components.Clear();
+                Components.Add(new Menu(this));
+                MediaPlayer.Volume = 1.0f;
+                MediaPlayer.Play(contentData.menu);
+            }
 
             base.Update(gameTime);
         }
