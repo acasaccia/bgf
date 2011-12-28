@@ -161,12 +161,12 @@ namespace BattlestarGalacticaFighters
       if (displayHelp)
       {
           string[] helpMsg = { "CONTROLS (ENTER to return to Main menu)",
-                               "Menu:",
+                               " MENU:",
                                "Select      Gamepad A           Keyboard ENTER",
                                "Move        Gamepad Left Stick  Keyboard UP,DOWN",
-                               "In game:",
-                               "Move        Gamepad A           Keyboard ENTER",
-                               "Select      Gamepad Left Stick  Keyboard Arrow UP,RIGHT,DOWN,LEFT",
+                               " IN GAME:",
+                               "Shoot       Gamepad A           Keyboard LEFT-CTRL",
+                               "Move        Gamepad Left Stick  Keyboard Arrow UP,RIGHT,DOWN,LEFT",
                                "Menu        Gamepad START       Keyboard ESC" };
           
           int helpMsgWidth = (int)(contentData.menuHelpFont.MeasureString(helpMsg[6]).X);
