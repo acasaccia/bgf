@@ -45,6 +45,7 @@ namespace BattlestarGalacticaFighters
     GamePadState previousGamepad;
     Stream stream;
     BinaryFormatter binaryFormatter;
+    bool displayHelp;
     public override void Update(GameTime gameTime)
     {
         //
@@ -58,7 +59,6 @@ namespace BattlestarGalacticaFighters
 
         //
         // MENU INPUT
-        // (so simple I didn't bothered moving on a specific component)
         //
 
         KeyboardState keyboard = Keyboard.GetState();
@@ -74,10 +74,7 @@ namespace BattlestarGalacticaFighters
                 selectedEntry = (selectedEntry + 1 + menuEntries.Length) % menuEntries.Length;
             } while (!menuEntries[selectedEntry].enabled);
 
-        previousKeyboard = keyboard;
-        previousGamepad = gamepad;
-
-        if (gamepad.Buttons.Start == ButtonState.Pressed || keyboard.IsKeyDown(Keys.Enter))
+        if ((gamepad.Buttons.A == ButtonState.Pressed && !(previousGamepad.Buttons.A == ButtonState.Pressed)) || (keyboard.IsKeyDown(Keys.Enter) && !previousKeyboard.IsKeyDown(Keys.Enter)))
         {
 
             //
@@ -109,13 +106,20 @@ namespace BattlestarGalacticaFighters
                     binaryFormatter.Serialize(stream, GameState.state);
                     stream.Close();
                     break;
+                case HELP:
+                    displayHelp = !displayHelp;
+                    break;
                 case EXIT_GAME:
                     Game.Exit();
                     break;
             }
+
         }
 
-      base.Update(gameTime);
+        previousKeyboard = keyboard;
+        previousGamepad = gamepad;
+
+        base.Update(gameTime);
     }
 
     public struct MenuEntry
@@ -135,13 +139,15 @@ namespace BattlestarGalacticaFighters
     const int RESUME_GAME = 1;
     const int LOAD_GAME = 2;
     const int SAVE_GAME = 3;
-    const int EXIT_GAME = 4;
+    const int HELP = 4;
+    const int EXIT_GAME = 5;
 
-    MenuEntry[] menuEntries = new MenuEntry[5] {
+    MenuEntry[] menuEntries = new MenuEntry[6] {
         new MenuEntry("New game", true, true),
         new MenuEntry("Resume game", false, false),
         new MenuEntry("Load game", false, false),
         new MenuEntry("Save game", false, false),
+        new MenuEntry("Help", true, false),
         new MenuEntry("Exit", true, false)
     };
 
@@ -151,17 +157,38 @@ namespace BattlestarGalacticaFighters
       GraphicsDevice.Clear(Color.Black);
       spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
       spriteBatch.Draw(contentData.logo, new Rectangle((GraphicsDevice.Viewport.Width - contentData.logo.Width) / 2, 0, contentData.logo.Width, contentData.logo.Height), Color.White);
-      Color entryColor;
-      for ( int i=0; i<menuEntries.Length; i++ )
-      {
-          if ( !menuEntries[i].enabled )
-              entryColor = Color.Gray;
-          else
-              entryColor = Color.White;
-          spriteBatch.DrawString(contentData.menuFont, menuEntries[i].label, new Vector2( ( GraphicsDevice.Viewport.Width - contentData.menuFont.MeasureString ( menuEntries[i].label ).X ) / 2, contentData.logo.Height + contentData.menuFont.MeasureString("O").Y * i), entryColor);
-      }
 
-      spriteBatch.DrawString(contentData.menuFont, "->", new Vector2((GraphicsDevice.Viewport.Width - contentData.menuFont.MeasureString(menuEntries[selectedEntry].label).X) / 2 - 50, contentData.logo.Height + contentData.menuFont.MeasureString("O").Y * selectedEntry), Color.White);
+      if (displayHelp)
+      {
+          string[] helpMsg = { "CONTROLS (ENTER to return to Main menu)",
+                               "Menu:",
+                               "Select      Gamepad A           Keyboard ENTER",
+                               "Move        Gamepad Left Stick  Keyboard UP,DOWN",
+                               "In game:",
+                               "Move        Gamepad A           Keyboard ENTER",
+                               "Select      Gamepad Left Stick  Keyboard Arrow UP,RIGHT,DOWN,LEFT",
+                               "Menu        Gamepad START       Keyboard ESC" };
+          
+          int helpMsgWidth = (int)(contentData.menuHelpFont.MeasureString(helpMsg[6]).X);
+
+          for (int i = 0; i < helpMsg.Length; i++)
+          {
+              spriteBatch.DrawString(contentData.menuHelpFont, helpMsg[i], new Vector2((GraphicsDevice.Viewport.Width - helpMsgWidth ) / 2, contentData.logo.Height + contentData.menuFont.MeasureString("X").Y * i), Color.White);
+          }
+      }
+      else
+      {
+          Color entryColor;
+          for (int i = 0; i < menuEntries.Length; i++)
+          {
+              if (!menuEntries[i].enabled)
+                  entryColor = Color.Gray;
+              else
+                  entryColor = Color.White;
+              spriteBatch.DrawString(contentData.menuFont, menuEntries[i].label, new Vector2((GraphicsDevice.Viewport.Width - contentData.menuFont.MeasureString(menuEntries[i].label).X) / 2, contentData.logo.Height + contentData.menuFont.MeasureString("O").Y * i), entryColor);
+          }
+          spriteBatch.DrawString(contentData.menuFont, "->", new Vector2((GraphicsDevice.Viewport.Width - contentData.menuFont.MeasureString(menuEntries[selectedEntry].label).X) / 2 - 50, contentData.logo.Height + contentData.menuFont.MeasureString("O").Y * selectedEntry), Color.White);
+      }
 
       spriteBatch.End();
       base.Draw(gameTime);
