@@ -44,6 +44,7 @@ namespace BattlestarGalacticaFighters
             spriteBatch = new SpriteBatch(GraphicsDevice);
             contentData.gameFont = Content.Load<SpriteFont>("interface");
             contentData.menuFont = Content.Load<SpriteFont>("menu");
+            contentData.menuHelpFont = Content.Load<SpriteFont>("menuHelp");
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
             contentData.logo = Content.Load<Texture2D>("logo");

@@ -17,7 +17,7 @@ namespace Shared
     {
         public Model viperMarkII, raider;
         public Texture2D space, spaceDust, explosion, laser, energyCells, gameOver;
-        public SpriteFont menuFont, gameFont;
+        public SpriteFont menuFont, gameFont, menuHelpFont;
         public Song menu, inGame;
         public SpriteBatch spriteBatch;
         public Texture2D logo;
