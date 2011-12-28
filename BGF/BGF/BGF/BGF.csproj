@@ -34,7 +34,7 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <AutorunEnabled>true</AutorunEnabled>
-    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationRevision>2</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -149,7 +149,7 @@
       <Project>{4D24C6A5-299F-49C2-97EE-D6EED62C3A3A}</Project>
       <Name>Shared</Name>
     </ProjectReference>
-    <ProjectReference Include="..\BattlestarGalacticaFightersContent\BGFContent.contentproj">
+    <ProjectReference Include="..\BGFContent\BGFContent.contentproj">
       <Name>BGFContent %28Content%29</Name>
       <XnaReferenceType>Content</XnaReferenceType>
       <Project>{3868B0FC-7047-4254-9DF0-4EF5CAD56552}</Project>
