@@ -54,6 +54,7 @@ namespace BattlestarGalacticaFighters
             contentData.explosion = Content.Load<Texture2D>("explosion_animation");
             contentData.laser = Content.Load<Texture2D>("laser");
             contentData.energyCells = Content.Load<Texture2D>("energy_cells");
+            contentData.gameOver = Content.Load<Texture2D>("game_over");
 
             // Scrolling background
             contentData.space = Content.Load<Texture2D>("space");

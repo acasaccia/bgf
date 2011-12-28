@@ -16,7 +16,7 @@ namespace Shared
     public class ContentData
     {
         public Model viperMarkII, raider;
-        public Texture2D space, spaceDust, explosion, laser, energyCells;
+        public Texture2D space, spaceDust, explosion, laser, energyCells, gameOver;
         public SpriteFont menuFont, gameFont;
         public Song menu, inGame;
         public SpriteBatch spriteBatch;
