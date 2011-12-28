@@ -31,7 +31,7 @@ namespace BattlestarGalacticaFighters
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            spriteFont = Game.Content.Load<SpriteFont>("interface");
+            spriteFont = Game.Content.Load<SpriteFont>("framerate");
          }
 
 
@@ -51,9 +51,9 @@ namespace BattlestarGalacticaFighters
         public override void Draw(GameTime gameTime)
         {
             frameCounter++;
-            string fps = string.Format("fps: {0}", frameRate);
+            string fps = string.Format("FPS: {0}", frameRate);
             spriteBatch.Begin();
-            spriteBatch.DrawString(spriteFont, fps, new Vector2(10, 10), Color.White);
+            spriteBatch.DrawString(spriteFont, fps, new Vector2(10, 0), Color.White);
             spriteBatch.End();
         }
     }

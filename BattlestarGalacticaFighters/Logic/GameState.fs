@@ -98,16 +98,20 @@ let rec update_state(dt:float32<s>) =
 
 and private update_viper (v:Viper) (dt:float32<s>) = 
   v.Position := !v.Position + !v.Speed * dt
-  v.Roll := if (!v.Speed).X > 0.0f<m/s> && !v.Roll < cylonMaxRoll then !v.Roll + cylonRollSpeed * dt
-            else if ( v.Speed.Value.X < 0.0f<m/s> && !v.Roll > (-cylonMaxRoll) ) then !v.Roll - cylonRollSpeed * dt
-            else if ( !v.Roll < 0.0f<rad> ) then !v.Roll + cylonRollSpeed * dt
+  // pan according to moving direction
+  v.Roll := if (!v.Speed).X > 0.0f<m/s> && !v.Roll < cylonMaxRoll
+              then !v.Roll + cylonRollSpeed * dt
+            else if ( v.Speed.Value.X < 0.0f<m/s> && !v.Roll > (-cylonMaxRoll) )
+              then !v.Roll - cylonRollSpeed * dt
+            else if ( !v.Roll < 0.0f<rad> )
+              then !v.Roll + cylonRollSpeed * dt
             else !v.Roll - cylonRollSpeed * dt
   if (not InputState.FireCannon && !v.CannonTemperature > 0.0f<f>) then
     v.CannonTemperature := !v.CannonTemperature - cannonCooldownRate * dt
   else
     v.CannonTemperature := !v.CannonTemperature
   v.Colliders := [for c in !state.cylons do
-                    if Vector2D.Distance(!c.Position, !v.Position) < cylonBoundingRadius
+                    if Vector2D.Distance(!c.Position, !v.Position) < viperBoundingRadius + cylonBoundingRadius
                       && !c.Shields = 0 // Cylon has no more shields and will be removed next frame
                                         // this way we ensure we dont decrement shields more than once
                                         // for each cylon
@@ -118,9 +122,10 @@ and private update_viper (v:Viper) (dt:float32<s>) =
                                  && !p.HasColliders
                                then yield p]
   v.Shields := !v.Shields - (!v.Colliders).Length - projectileColliders.Length
-  v.LastCollisionTime := if (!v.Colliders).Length + projectileColliders.Length > 0
-                         then !state.elapsedTime
-                         else !v.LastCollisionTime
+  v.LastCollisionTime := if (!v.Colliders).Length + projectileColliders.Length > 0 then
+                           !state.elapsedTime
+                         else
+                           !v.LastCollisionTime
                           
   // Following flags are used for audio events, will eventually be raised for a single frame by coroutines
   v.OverHeated := false 
@@ -134,12 +139,17 @@ and private update_viper (v:Viper) (dt:float32<s>) =
 and private update_cylon (c:Cylon) (dt:float32<s>) =
   c.Position := !c.Position + !c.Speed * dt
   c.Speed := !c.Speed
-  c.Roll := if (!c.Speed).X > 0.0f<m/s> && !c.Roll < cylonMaxRoll then !c.Roll + cylonRollSpeed * dt
-            else if ( c.Speed.Value.X < 0.0f<m/s> && !c.Roll > (-cylonMaxRoll) ) then !c.Roll - cylonRollSpeed * dt
-            else if ( !c.Roll < 0.0f<rad> ) then !c.Roll + cylonRollSpeed * dt
+  // pan according to moving direction
+  c.Roll := if (!c.Speed).X > 0.0f<m/s> && !c.Roll < cylonMaxRoll
+              then !c.Roll + cylonRollSpeed * dt
+            else if ( c.Speed.Value.X < 0.0f<m/s> && !c.Roll > (-cylonMaxRoll) )
+              then !c.Roll - cylonRollSpeed * dt
+            else if ( !c.Roll < 0.0f<rad> )
+              then !c.Roll + cylonRollSpeed * dt
             else !c.Roll - cylonRollSpeed * dt
-  if Vector2D.Distance(!c.Position, !state.viper.Position) < viperBoundingRadius && not !state.gameOver then
-    c.Shields := 0 // Kamikazeeee
+  if Vector2D.Distance(!c.Position, !state.viper.Position) < viperBoundingRadius + cylonBoundingRadius && not !state.gameOver then
+    // Kamikazeeee
+    c.Shields := 0
   else
     c.Shields := !c.Shields - (!c.Colliders).Length
   c.Colliders := [for p in !state.projectiles do
@@ -212,7 +222,7 @@ let private main =
 
 
   //
-  // PLAYER CONTROLLED SHIP GUN LOGIC
+  // CANNON LOGIC
   //
 
   let update_viper_cannon() = 
@@ -305,22 +315,23 @@ let private main =
   let spawn_cylons () = 
     co {
       do! yield_
-      // With time, we increase enemies spawn rate
-      let advance = !state.elapsedTime / 60.0
-      // Minimum spawn wait time is 0.7s
-      do! wait ( max (((random.Next(7,35) |> float) / 10.0) - advance * minimumSpawnWait) (minimumSpawnWait) )
-      let pos = ((random.Next(10) - 5) |> float32) / 10.0f * m
-      let newborn = {
-        Position = Variable( fun() -> { X = pos; Y = entitiesRemovalClamp.Y } )
-        Speed = Variable( fun() -> { X = 0.0f<m/s>; Y = -cylonSpeed * 2.0f } )
-        Roll = Variable(fun() -> 0.0f<rad> )
-        Colliders = Variable(fun () -> [])
-        Shields = Variable(fun() -> cylonShields)
-        IsShooting = Variable(fun () -> false)
-        AI = Variable(fun() -> co{ return () })
-      }
-      newborn.AI := cylon_ai(newborn)
-      state.cylons := newborn :: !state.cylons
+      if !state.elapsedTime > 3.0 then
+        // With time, we increase enemies spawn rate
+        let advance = !state.elapsedTime / 60.0
+        // Minimum spawn wait time is 0.75s
+        do! wait ( max (((random.Next(7,35) |> float) / 10.0) - advance * minimumSpawnWait) (minimumSpawnWait) )
+        let pos = ((random.Next(10) - 5) |> float32) / 10.0f * m
+        let newborn = {
+          Position = Variable( fun() -> { X = pos; Y = entitiesRemovalClamp.Y } )
+          Speed = Variable( fun() -> { X = 0.0f<m/s>; Y = -cylonSpeed * 2.0f } )
+          Roll = Variable(fun() -> 0.0f<rad> )
+          Colliders = Variable(fun () -> [])
+          Shields = Variable(fun() -> cylonShields)
+          IsShooting = Variable(fun () -> false)
+          AI = Variable(fun() -> co{ return () })
+        }
+        newborn.AI := cylon_ai(newborn)
+        state.cylons := newborn :: !state.cylons
     } |> repeat_
    
   in (spawn_cylons() .||> process_input() .||> update_viper_cannon()) |> ref
@@ -335,3 +346,40 @@ let update_script () =
   for c in !state.cylons
     do c.AI := update_ai !c.AI
 
+//
+// RESET ALL VARIABLES TO THEIR INITIAL STATE
+//
+
+let reset () =
+  state.viper.Position := { X = 0.0f<m>; Y = 0.0f<m> }
+  state.viper.Speed := { X = 0.0f<m/s>; Y = 0.0f<m/s> }
+  state.viper.Roll := 0.0f<rad>
+  state.viper.CannonTemperature := 0.0f<f>
+  state.viper.IsShooting := false
+  state.viper.OverHeated := false
+  state.viper.Shields := vipershields
+  state.viper.Colliders := []
+  state.viper.LastCollisionTime := -10.0
+  state.projectiles := []
+  state.cylons := []
+  state.explosions := []
+  state.cylonsFragged := 0
+  state.elapsedTime := 0.0
+  state.gameOver := false
+
+let set ( newState : GameState ) =
+  state.viper.Position := !newState.viper.Position
+  state.viper.Speed := !newState.viper.Speed
+  state.viper.Roll := !newState.viper.Roll
+  state.viper.CannonTemperature := !newState.viper.CannonTemperature
+  state.viper.IsShooting := !newState.viper.IsShooting
+  state.viper.OverHeated := !newState.viper.OverHeated
+  state.viper.Shields := !newState.viper.Shields
+  state.viper.Colliders := !newState.viper.Colliders
+  state.viper.LastCollisionTime := !newState.viper.LastCollisionTime
+  state.projectiles := !newState.projectiles
+  state.cylons := !newState.cylons
+  state.explosions := !newState.explosions
+  state.cylonsFragged := !newState.cylonsFragged
+  state.elapsedTime := !newState.elapsedTime
+  state.gameOver := !newState.gameOver

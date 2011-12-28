@@ -23,66 +23,23 @@ namespace BattlestarGalacticaFighters
             // TODO: Construct any child components here
         }
 
+        ContentData contentData;
         public override void Initialize()
         {
+            contentData = Game.Services.GetService(typeof(ContentData)) as ContentData;
             base.Initialize();
         }
 
-        BasicEffect basic_effect;
-        RenderingData renderingData = new RenderingData();
         SpriteBatch spriteBatch;
+        BasicEffect basicEffect;
         protected override void LoadContent()
         {
-            RenderingData.viewPort = GraphicsDevice.Viewport;
-
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            renderingData.gameInterface = Game.Content.Load<SpriteFont>("interface");
-
-            // Projectiles and fx
-            renderingData.explosion = Game.Content.Load<Texture2D>("explosion_animation");
-            renderingData.laser = Game.Content.Load<Texture2D>("laser");
-            renderingData.energyCells = Game.Content.Load<Texture2D>("energy_cells");
-
-            // Scrolling background
-            renderingData.space = Game.Content.Load<Texture2D>("space");
-            renderingData.spaceDust = Game.Content.Load<Texture2D>("space_dust");
-
-            // 3d models
-            renderingData.viperMarkII = Game.Content.Load<Model>("Viper_Mk_II");
-            BoundingSphere boundingSphere = new BoundingSphere();
-            foreach (var mesh in renderingData.viperMarkII.Meshes)
-            {
-                foreach (BasicEffect fx in mesh.Effects)
-                {
-                    fx.EnableDefaultLighting();
-                    fx.SpecularColor = Color.White.ToVector3();
-                    fx.DiffuseColor = Color.Gray.ToVector3();
-                    fx.AmbientLightColor = Color.White.ToVector3();
-                }
-                boundingSphere = BoundingSphere.CreateMerged(boundingSphere, mesh.BoundingSphere);
-            }
-            RenderingData.viperMarkIIBoundingRadius = boundingSphere.Radius;
-
-            renderingData.raider = Game.Content.Load<Model>("Cylon_Raider");
-            boundingSphere = new BoundingSphere();
-            foreach (var mesh in renderingData.raider.Meshes)
-            {
-                foreach (BasicEffect fx in mesh.Effects)
-                {
-                    fx.EnableDefaultLighting();
-                    fx.SpecularColor = Color.Gray.ToVector3();
-                    fx.DiffuseColor = Color.Gray.ToVector3();
-                    fx.AmbientLightColor = Color.White.ToVector3();
-                }
-                boundingSphere = BoundingSphere.CreateMerged(boundingSphere, mesh.BoundingSphere);
-            }
-            RenderingData.raiderBoundingRadius = boundingSphere.Radius;
-
-            // Initialize basic_effect
-            basic_effect = new BasicEffect(GraphicsDevice);
-            basic_effect.World = Matrix.Identity;
-            basic_effect.View = Matrix.CreateLookAt(Vector3.Backward * 1.0f, Vector3.Zero, Vector3.Up);
-            basic_effect.Projection = Matrix.CreateOrthographic((float)GraphicsDevice.Viewport.Width / GraphicsDevice.Viewport.Height, 1.0f, 0.1f, 10000.0f);
+            // Initialize basicEffect
+            basicEffect = new BasicEffect(GraphicsDevice);
+            basicEffect.World = Matrix.Identity;
+            basicEffect.View = Matrix.CreateLookAt(Vector3.Backward * 1.0f, Vector3.Zero, Vector3.Up);
+            basicEffect.Projection = Matrix.CreateOrthographic((float)GraphicsDevice.Viewport.Width / GraphicsDevice.Viewport.Height, 1.0f, 0.1f, 10000.0f);
 
             base.LoadContent();
         }
@@ -109,9 +66,9 @@ namespace BattlestarGalacticaFighters
                 foreach (Entities.Projectile projectile in projectiles)
                 {
                     if (projectile.Owner == Utilities.Factions.Colonies)
-                        spriteBatch.Draw(renderingData.laser, Conversions.toSpriteBatchCoords(projectile.Position.Value, GraphicsDevice.Viewport) - new Vector2(renderingData.laser.Width / 2, 0.0f), Color.White);
+                        spriteBatch.Draw(contentData.laser, Conversions.toSpriteBatchCoords(projectile.Position.Value, GraphicsDevice.Viewport) - new Vector2(contentData.laser.Width / 2, 0.0f), Color.White);
                     else
-                        spriteBatch.Draw(renderingData.energyCells, Conversions.toSpriteBatchCoords(projectile.Position.Value, GraphicsDevice.Viewport) - new Vector2(renderingData.laser.Width / 2, 0.0f), Color.White);
+                        spriteBatch.Draw(contentData.energyCells, Conversions.toSpriteBatchCoords(projectile.Position.Value, GraphicsDevice.Viewport) - new Vector2(contentData.laser.Width / 2, 0.0f), Color.White);
                 }
             }
 
@@ -120,7 +77,7 @@ namespace BattlestarGalacticaFighters
             //
 
             foreach (Entities.Explosion explosion in explosions)
-                spriteBatch.Draw(renderingData.explosion, Conversions.toSpriteBatchCoords(explosion.Position.Value, GraphicsDevice.Viewport) - new Vector2(50.0f,70.0f), new Rectangle(( 10 - ((int)(explosion.Time.Value * 10))) * 120, 0, 120, 120), Color.White);
+                spriteBatch.Draw(contentData.explosion, Conversions.toSpriteBatchCoords(explosion.Position.Value, GraphicsDevice.Viewport) - new Vector2(50.0f,70.0f), new Rectangle(( 10 - ((int)(explosion.Time.Value * 10))) * 120, 0, 120, 120), Color.White);
 
             spriteBatch.End();
 
@@ -132,8 +89,8 @@ namespace BattlestarGalacticaFighters
             // PLAYER CONTROLLED SHIP
             //
 
-            if (gameTime.TotalGameTime.TotalSeconds - viper.LastCollisionTime.Value < 0.2)
-                foreach (var mesh in renderingData.viperMarkII.Meshes)
+            if (GameState.state.elapsedTime.Value - viper.LastCollisionTime.Value < 0.2)
+                foreach (var mesh in contentData.viperMarkII.Meshes)
                 {
                     foreach (BasicEffect fx in mesh.Effects)
                     {
@@ -142,7 +99,7 @@ namespace BattlestarGalacticaFighters
                     }
                 }
             else
-                foreach (var mesh in renderingData.viperMarkII.Meshes)
+                foreach (var mesh in contentData.viperMarkII.Meshes)
                 {
                     foreach (BasicEffect fx in mesh.Effects)
                     {
@@ -154,12 +111,12 @@ namespace BattlestarGalacticaFighters
 
             if (viper.Shields.Value > 0)
             {
-                renderingData.viperMarkII.Draw(
-                    basic_effect.World
+                contentData.viperMarkII.Draw(
+                    basicEffect.World
                     * Matrix.CreateFromQuaternion(Quaternion.CreateFromYawPitchRoll(viper.Roll.Value, 0.0f, 0.0f))
                     * Matrix.CreateTranslation(Conversions.toVector3(viper.Position.Value)),
-                    basic_effect.View,
-                    basic_effect.Projection
+                    basicEffect.View,
+                    basicEffect.Projection
                 );
             }
 
@@ -171,7 +128,7 @@ namespace BattlestarGalacticaFighters
             {
                 IList<Entities.Projectile> cylonColliders = cylon.Colliders.Value.ToList();
                 if (cylon.Shields.Value < Constants.cylonShieldsWarning && ((int)gameTime.TotalGameTime.TotalMilliseconds / 150) % 2 == 0)
-                 foreach (var mesh in renderingData.raider.Meshes)
+                 foreach (var mesh in contentData.raider.Meshes)
                   {
                     foreach (BasicEffect fx in mesh.Effects)
                     {
@@ -180,7 +137,7 @@ namespace BattlestarGalacticaFighters
                     }
                   }
                 else if (cylonColliders.Count > 0)
-                    foreach (var mesh in renderingData.raider.Meshes)
+                    foreach (var mesh in contentData.raider.Meshes)
                     {
                         foreach (BasicEffect fx in mesh.Effects)
                         {
@@ -189,7 +146,7 @@ namespace BattlestarGalacticaFighters
                         }
                     }
                 else
-                    foreach (var mesh in renderingData.raider.Meshes)
+                    foreach (var mesh in contentData.raider.Meshes)
                     {
                         foreach (BasicEffect fx in mesh.Effects)
                         {
@@ -199,12 +156,12 @@ namespace BattlestarGalacticaFighters
                         }
                     }
 
-                renderingData.raider.Draw(
-                    basic_effect.World
+                contentData.raider.Draw(
+                    basicEffect.World
                     * Matrix.CreateFromQuaternion(Quaternion.CreateFromYawPitchRoll(cylon.Roll.Value, 0.0f, 3.14f))
                     * Matrix.CreateTranslation(Conversions.toVector3(cylon.Position.Value)),
-                    basic_effect.View,
-                    basic_effect.Projection
+                    basicEffect.View,
+                    basicEffect.Projection
                 );
             }
 
@@ -232,25 +189,25 @@ namespace BattlestarGalacticaFighters
                 horizontalScrollDirection = 0;
 
             // Update background position based on player's ship movement
-            backgroundPosition.X = backgroundPosition.X + horizontalScrollDirection * (float)gameTime.ElapsedGameTime.TotalSeconds * RenderingData.backgroundScrollSpeed;
-            //cloudsPosition.X = cloudsPosition.X + horizontalScrollDirection * (float)gameTime.ElapsedGameTime.TotalSeconds * renderingData.cloudsScrollSpeed;
-            backgroundPosition.Y += (float)gameTime.ElapsedGameTime.TotalSeconds * RenderingData.backgroundScrollSpeed;
-            cloudsPosition.Y += (float)gameTime.ElapsedGameTime.TotalSeconds * RenderingData.cloudsScrollSpeed;
+            backgroundPosition.X = backgroundPosition.X + horizontalScrollDirection * (float)gameTime.ElapsedGameTime.TotalSeconds * ContentData.backgroundScrollSpeed;
+            //cloudsPosition.X = cloudsPosition.X + horizontalScrollDirection * (float)gameTime.ElapsedGameTime.TotalSeconds * contentData.cloudsScrollSpeed;
+            backgroundPosition.Y += (float)gameTime.ElapsedGameTime.TotalSeconds * ContentData.backgroundScrollSpeed;
+            cloudsPosition.Y += (float)gameTime.ElapsedGameTime.TotalSeconds * ContentData.cloudsScrollSpeed;
 
             // Clamp position to avoid overflow
-            backgroundPosition.X = backgroundPosition.X % renderingData.space.Width;
-            backgroundPosition.Y = backgroundPosition.Y % renderingData.space.Height;
-            cloudsPosition.Y = cloudsPosition.Y % renderingData.spaceDust.Height;
+            backgroundPosition.X = backgroundPosition.X % contentData.space.Width;
+            backgroundPosition.Y = backgroundPosition.Y % contentData.space.Height;
+            cloudsPosition.Y = cloudsPosition.Y % contentData.spaceDust.Height;
 
             spriteBatch.Draw(
-                renderingData.space,
+                contentData.space,
                 Vector2.Zero,
                 new Rectangle((int)backgroundPosition.X, -(int)backgroundPosition.Y, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height),
                 Color.White
             );
 
             spriteBatch.Draw(
-                renderingData.spaceDust,
+                contentData.spaceDust,
                 Vector2.Zero,
                 new Rectangle((int)cloudsPosition.X, -(int)cloudsPosition.Y, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height),
                 Color.White
@@ -258,8 +215,6 @@ namespace BattlestarGalacticaFighters
 
             spriteBatch.End();
         }
-
-        int framerate = 0;
 
         //
         // INTERFACE
@@ -286,6 +241,10 @@ namespace BattlestarGalacticaFighters
             Color shieldColor = Color.Cyan;
             Color shieldInterfaceColor = Color.LimeGreen;
             switch (GameState.state.viper.Shields.Value) {
+                case 4:
+                case 3:
+                    shieldColor = Color.LimeGreen;
+                    break;
                 case 2:
                     shieldColor = Color.Yellow;
                     break;
@@ -307,16 +266,21 @@ namespace BattlestarGalacticaFighters
 
             string msg = "Score: " + ((int)GameState.state.elapsedTime.Value * 10 + GameState.state.cylonsFragged.Value * 100).ToString();
 
-            spriteBatch.DrawString(renderingData.gameInterface, "Cannon temp: ", new Vector2(GraphicsDevice.Viewport.Width - 440, GraphicsDevice.Viewport.Height - 40), cannonInterfaceColor);
-            spriteBatch.DrawString(renderingData.gameInterface, gunBar, new Vector2(GraphicsDevice.Viewport.Width - 210, GraphicsDevice.Viewport.Height - 42), gunColor);
-            spriteBatch.DrawString(renderingData.gameInterface, "Viper shields: ", new Vector2(GraphicsDevice.Viewport.Width - 440, GraphicsDevice.Viewport.Height - 20), shieldInterfaceColor);
-            spriteBatch.DrawString(renderingData.gameInterface, shieldBar, new Vector2(GraphicsDevice.Viewport.Width - 210, GraphicsDevice.Viewport.Height - 22), shieldColor);
+            int temperatureLabelOffset = (int)contentData.gameFont.MeasureString("Temperature: ||||||||||||||||||||||||||||||").X + 10;
+            int shieldsLabelOffset = (int)contentData.gameFont.MeasureString("Shields: ||||||||||||||||||||||||||||||").X + 10;
+            int rightBarsOffset = (int)contentData.gameFont.MeasureString("||||||||||||||||||||||||||||||").X + 10;
+            int charHeight = (int)(int)contentData.gameFont.MeasureString("|").Y;
+
+            spriteBatch.DrawString(contentData.gameFont, "Temperature: ", new Vector2(GraphicsDevice.Viewport.Width - temperatureLabelOffset, GraphicsDevice.Viewport.Height - charHeight), cannonInterfaceColor);
+            spriteBatch.DrawString(contentData.gameFont, gunBar, new Vector2(GraphicsDevice.Viewport.Width - rightBarsOffset, GraphicsDevice.Viewport.Height - charHeight), gunColor);
+            spriteBatch.DrawString(contentData.gameFont, "Shields: ", new Vector2(GraphicsDevice.Viewport.Width - shieldsLabelOffset, GraphicsDevice.Viewport.Height - 2 * charHeight), shieldInterfaceColor);
+            spriteBatch.DrawString(contentData.gameFont, shieldBar, new Vector2(GraphicsDevice.Viewport.Width - rightBarsOffset, GraphicsDevice.Viewport.Height - 2 * charHeight), shieldColor);
 
             int seconds = (int)GameState.state.elapsedTime.Value % 60;
             int minutes = (int)Math.Truncate(GameState.state.elapsedTime.Value/60);
 
-            spriteBatch.DrawString(renderingData.gameInterface, msg, new Vector2(10, GraphicsDevice.Viewport.Height - 40), Color.LimeGreen);
-            spriteBatch.DrawString(renderingData.gameInterface, "Time elapsed: " + String.Format("{0:00}", minutes) + ':' + String.Format("{0:00}", seconds), new Vector2(10, GraphicsDevice.Viewport.Height - 20), Color.LimeGreen);
+            spriteBatch.DrawString(contentData.gameFont, msg, new Vector2(10, GraphicsDevice.Viewport.Height - 2 * charHeight), Color.LimeGreen);
+            spriteBatch.DrawString(contentData.gameFont, "Time elapsed: " + String.Format("{0:00}", minutes) + ':' + String.Format("{0:00}", seconds), new Vector2(10, GraphicsDevice.Viewport.Height - charHeight), Color.LimeGreen);
 
             spriteBatch.End();
         }
